@@ -1,4 +1,4 @@
-﻿//-----------------------------------------------
+//-----------------------------------------------
 //
 //	This file is part of the Siv3D Engine.
 //
@@ -133,11 +133,11 @@ namespace s3d
 //
 //////////////////////////////////////////////////
 
-# if SIV3D_PLATFORM(WINDOWS)
+# if defined _MSC_VER
 
 	# define SIV3D_VECTOR_CALL __vectorcall
 
-# elif SIV3D_PLATFORM(MACOS) || SIV3D_PLATFORM(LINUX)
+# elif SIV3D_PLATFORM(MACOS) || SIV3D_PLATFORM(LINUX) || defined(__MINGW32__)
 
 	# define SIV3D_VECTOR_CALL
 
