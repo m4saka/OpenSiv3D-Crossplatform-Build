@@ -44,7 +44,8 @@ namespace s3d
 
 		[[nodiscard]] bool is_done() const
 		{
-			return SIV3D_CONCURRENT_TASK_IS_DONE;
+			return base_type::valid()
+			&& (base_type::wait_for(std::chrono::seconds(0)) == std::future_status::ready);
 		}
 	};
 
