@@ -219,7 +219,7 @@ namespace s3d
 		formatData.string.append(value);
 	}
 
-# if __has_include(<compare>) && SIV3D_PLATFORM(WINDOWS)
+# ifdef __cpp_impl_three_way_comparison
 
 	void Formatter(FormatData& formatData, const std::strong_ordering value)
 	{
