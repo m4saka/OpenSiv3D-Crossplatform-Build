@@ -155,7 +155,7 @@ namespace s3d
 //
 //////////////////////////////////////////////////
 
-# if SIV3D_PLATFORM(WINDOWS)
+# if defined(_MSC_VER) && !defined(__clang__)
 
     # define SIV3D_DISABLE_MSVC_WARNINGS_PUSH(warnings)	\
 			 __pragma(warning(push))					\
