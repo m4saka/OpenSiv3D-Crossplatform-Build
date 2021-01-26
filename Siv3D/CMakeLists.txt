@@ -3,8 +3,6 @@ cmake_minimum_required (VERSION 3.0)
 project(OpenSiv3D CXX)
 enable_language(C)
 
-#set(CMAKE_BUILD_TYPE Release)
-
 set(SOURCE_FILES_SIV3D
 	"src/Siv3D/AABB/SivAABB.cpp"
 	"src/Siv3D/AnimatedGIFReader/AnimatedGIFReaderDetail.cpp"
@@ -851,17 +849,24 @@ elseif(UNIX)
 		"src/Siv3D-Platform/Linux/XInput/CXInput.cpp")
 endif()
 
+# OSで分岐
 if(WIN32)
 	set(PLATFORM_DIR "WindowsDesktop")
-	set(SOURCE_FILES ${SOURCE_FILES_SIV3D} ${SOURCE_FILES_PLATFORM})
 elseif(APPLE)
 	set(PLATFORM_DIR "macOS")
-	set(SOURCE_FILES ${SOURCE_FILES_SIV3D} ${SOURCE_FILES_PLATFORM})
 elseif(UNIX)
 	set(PLATFORM_DIR "Linux")
-	set(SOURCE_FILES ${SOURCE_FILES_SIV3D} ${SOURCE_FILES_THIRD_PARTY} ${SOURCE_FILES_PLATFORM})
+	set(LINUX ON)
 else()
 	message(FATAL_ERROR "Unsupported OS")
+endif()
+
+if(LINUX)
+	# Linux版のみサードパーティ製ライブラリをソースファイルからビルド
+	set(SOURCE_FILES ${SOURCE_FILES_SIV3D} ${SOURCE_FILES_THIRD_PARTY} ${SOURCE_FILES_PLATFORM})
+else()
+	# Windows/Mac版はコンパイル済みライブラリを使用するためサードパーティ製ライブラリのソースファイルは除外
+	set(SOURCE_FILES ${SOURCE_FILES_SIV3D} ${SOURCE_FILES_PLATFORM})
 endif()
 
 add_library(Siv3D STATIC ${SOURCE_FILES})
@@ -879,13 +884,22 @@ target_include_directories(Siv3D PRIVATE
 	"src/ThirdParty/zstd"
 	"src/ThirdParty/zstd/common"
 	"src/ThirdParty/freetype"
-
-	${LIBSIV3D_INCLUDE_DIRS}
 )
 
-if(MSVC)
-	target_compile_options(Siv3D PRIVATE /std:c++latest /W4 /utf-8)
+if(LINUX)
+	# Linux版は外部ライブラリをpkg-configで指定
+	find_package(PkgConfig)
+	pkg_check_modules(LIBSIV3D REQUIRED glib-2.0 gobject-2.0 gio-2.0 gl libpng libturbojpeg x11 xi xinerama xcursor xrandr gl glu freetype2 openal opencv4 ogg vorbis zlib)
+	target_include_directories(Siv3D PRIVATE ${LIBSIV3D_INCLUDE_DIRS})
+else()
+	# Windows/Mac版はboostのインクルードパスを相対パスで指定
+	# (Linux版はboostが環境へインストールされている前提かつヘッダのみ使用のため指定不要)
 	target_include_directories(Siv3D PRIVATE "../Dependencies/boost_1_72_0")
+endif()
+
+if(MSVC)
+	# Windows版(Visual Studio)
+	target_compile_options(Siv3D PRIVATE /std:c++latest /W4 /utf-8)
 
 	set(MSVC_DEFINES "/D_LIB /D_USE_MATH_DEFINES /DMUPARSER_STATIC /DMSDFGEN_USE_CPP11 /D_SILENCE_CXX17_RESULT_OF_DEPRECATION_WARNING /D_UNICODE /DUNICODE")
 
@@ -895,14 +909,14 @@ if(MSVC)
 	set(CMAKE_C_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /MT")
 	set(CMAKE_C_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /MTd")
 else()
+	# Mac/Linux版
 	if(APPLE)
-		set(PLATFORM_FLAGS "-msse4.1 -D__MACOSX_CORE__ -D_GLFW_COCOA")
-		target_include_directories(Siv3D PRIVATE "../Dependencies/boost_1_72_0")
+		set(PLATFORM_FLAGS "-D__MACOSX_CORE__ -D_GLFW_COCOA")
 	else()
-		set(PLATFORM_FLAGS "-msse4.1 -D_GLFW_X11")
+		set(PLATFORM_FLAGS "-D_GLFW_X11")
 	endif()
 
-	set(CMAKE_CXX_FLAGS "-std=c++2a -Wall -Wextra -Wno-unknown-pragmas -fPIC ${PLATFORM_FLAGS}")
+	set(CMAKE_CXX_FLAGS "-std=c++17 -Wall -Wextra -Wno-unknown-pragmas -fPIC -msse4.1 ${PLATFORM_FLAGS}")
 	set(CMAKE_CXX_FLAGS_DEBUG "-g3 -O0 -pg -DDEBUG")
 	set(CMAKE_CXX_FLAGS_RELEASE "-O2 -DNDEBUG -march=x86-64")
 	set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "-g3 -Og -pg")
@@ -913,11 +927,6 @@ else()
 	set(CMAKE_C_FLAGS_RELEASE "-O2 -DNDEBUG -march=x86-64")
 	set(CMAKE_C_FLAGS_RELWITHDEBINFO "-g3 -Og -pg")
 	set(CMAKE_C_FLAGS_MINSIZEREL "-Os -DNDEBUG -march=x86-64")
-endif()
-
-if(UNIX AND NOT APPLE)
-	find_package(PkgConfig)
-	pkg_check_modules(LIBSIV3D REQUIRED glib-2.0 gobject-2.0 gio-2.0 gl libpng libturbojpeg x11 xi xinerama xcursor xrandr gl glu freetype2 openal opencv4 ogg vorbis zlib)
 endif()
 
 if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
