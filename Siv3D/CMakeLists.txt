@@ -523,7 +523,6 @@ set(SOURCE_FILES_THIRD_PARTY
 	"src/ThirdParty/minizip/mz_crypt.c"
 	"src/ThirdParty/minizip/mz_crypt_brg.c"
 	"src/ThirdParty/minizip/mz_os.c"
-	"src/ThirdParty/minizip/mz_os_posix.c"
 	"src/ThirdParty/minizip/mz_strm.c"
 	"src/ThirdParty/minizip/mz_strm_buf.c"
 	"src/ThirdParty/minizip/mz_strm_mem.c"
@@ -593,20 +592,11 @@ set(SOURCE_FILES_THIRD_PARTY
 	"src/ThirdParty/zstd/dictBuilder/cover.c"
 	"src/ThirdParty/zstd/dictBuilder/divsufsort.c"
 	"src/ThirdParty/zstd/dictBuilder/fastcover.c"
-	"src/ThirdParty/zstd/dictBuilder/zdict.c"
-	"src/ThirdParty/GLFW/context.c"
-	"src/ThirdParty/GLFW/egl_context.c"
-	"src/ThirdParty/GLFW/init.c"
-	"src/ThirdParty/GLFW/input.c"
-	"src/ThirdParty/GLFW/monitor.c"
-	"src/ThirdParty/GLFW/osmesa_context.c"
-	"src/ThirdParty/GLFW/posix_thread.c"
-	"src/ThirdParty/GLFW/vulkan.c"
-	"src/ThirdParty/GLFW/window.c"
-	"src/ThirdParty/RtAudio/RtAudio.cpp")
+	"src/ThirdParty/zstd/dictBuilder/zdict.c")
 
 
 if(WIN32)
+	enable_language(ASM_MASM)
 	set(SOURCE_FILES_PLATFORM
 		"src/Siv3D-Platform/WindowsDesktop/Siv3DMain.cpp"
 
@@ -690,7 +680,12 @@ if(WIN32)
 		"src/Siv3D-Platform/WindowsDesktop/Window/HighDPI.cpp"
 		"src/Siv3D-Platform/WindowsDesktop/Window/WindowProc.cpp"
 		"src/Siv3D-Platform/WindowsDesktop/WritableMemoryMapping/WritableMemoryMappingDetail.cpp"
-		"src/Siv3D-Platform/WindowsDesktop/XInput/CXInput.cpp")
+		"src/Siv3D-Platform/WindowsDesktop/XInput/CXInput.cpp"
+
+		"src/ThirdParty/angelscript/as_callfunc_x64_msvc.cpp"
+		"src/ThirdParty/angelscript/as_callfunc_x64_msvc_asm.asm"
+		"src/ThirdParty/angelscript/as_callfunc_x86.cpp"
+		"src/ThirdParty/WinToast/wintoastlib.cpp")
 elseif(APPLE)
 	set(SOURCE_FILES_PLATFORM
 		"src/Siv3D-Platform/macOS/Siv3DMain.cpp"
@@ -769,12 +764,23 @@ elseif(APPLE)
 		"src/Siv3D-Platform/macOS/Process/ChildProcessDetail.mm"
 		"src/Siv3D-Platform/macOS/Clipboard/CClipboard.mm"
 
+		"src/ThirdParty/minizip/mz_os_posix.c"
+		"src/ThirdParty/GLFW/context.c"
+		"src/ThirdParty/GLFW/egl_context.c"
+		"src/ThirdParty/GLFW/init.c"
+		"src/ThirdParty/GLFW/input.c"
+		"src/ThirdParty/GLFW/monitor.c"
+		"src/ThirdParty/GLFW/osmesa_context.c"
+		"src/ThirdParty/GLFW/posix_thread.c"
+		"src/ThirdParty/GLFW/vulkan.c"
+		"src/ThirdParty/GLFW/window.c"
 		"src/ThirdParty/GLFW/cocoa_init.m"
 		"src/ThirdParty/GLFW/cocoa_joystick.m"
 		"src/ThirdParty/GLFW/cocoa_monitor.m"
 		"src/ThirdParty/GLFW/cocoa_time.c"
 		"src/ThirdParty/GLFW/cocoa_window.m"
-		"src/ThirdParty/GLFW/nsgl_context.m")
+		"src/ThirdParty/GLFW/nsgl_context.m"
+		"src/ThirdParty/RtAudio/RtAudio.cpp")
 elseif(UNIX)
 	set(SOURCE_FILES_PLATFORM
 		"src/Siv3D-Platform/Linux/Siv3DMain.cpp"
@@ -848,14 +854,25 @@ elseif(UNIX)
 		"src/Siv3D-Platform/Linux/Window/CWindow.cpp"
 		"src/Siv3D-Platform/Linux/WritableMemoryMapping/WritableMemoryMappingDetail.cpp"
 		"src/Siv3D-Platform/Linux/XInput/CXInput.cpp"
-	
+
+		"src/ThirdParty/minizip/mz_os_posix.c"
+		"src/ThirdParty/GLFW/context.c"
+		"src/ThirdParty/GLFW/egl_context.c"
+		"src/ThirdParty/GLFW/init.c"
+		"src/ThirdParty/GLFW/input.c"
+		"src/ThirdParty/GLFW/monitor.c"
+		"src/ThirdParty/GLFW/osmesa_context.c"
+		"src/ThirdParty/GLFW/posix_thread.c"
+		"src/ThirdParty/GLFW/vulkan.c"
+		"src/ThirdParty/GLFW/window.c"
 		"src/ThirdParty/GLFW/glx_context.c"
 		"src/ThirdParty/GLFW/linux_joystick.c"
 		"src/ThirdParty/GLFW/posix_time.c"
 		"src/ThirdParty/GLFW/x11_init.c"
 		"src/ThirdParty/GLFW/x11_monitor.c"
 		"src/ThirdParty/GLFW/x11_window.c"
-		"src/ThirdParty/GLFW/xkb_unicode.c")
+		"src/ThirdParty/GLFW/xkb_unicode.c"
+		"src/ThirdParty/RtAudio/RtAudio.cpp")
 endif()
 
 # OSで分岐
