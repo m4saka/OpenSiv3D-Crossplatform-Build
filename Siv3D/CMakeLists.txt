@@ -599,18 +599,12 @@ set(SOURCE_FILES_THIRD_PARTY
 	"src/ThirdParty/GLFW/init.c"
 	"src/ThirdParty/GLFW/input.c"
 	"src/ThirdParty/GLFW/monitor.c"
+	"src/ThirdParty/GLFW/osmesa_context.c"
 	"src/ThirdParty/GLFW/posix_thread.c"
 	"src/ThirdParty/GLFW/vulkan.c"
 	"src/ThirdParty/GLFW/window.c"
-	"src/ThirdParty/GLFW/glx_context.c"
-	"src/ThirdParty/GLFW/osmesa_context.c"
-	"src/ThirdParty/GLFW/linux_joystick.c"
-	"src/ThirdParty/GLFW/posix_time.c"
-	"src/ThirdParty/GLFW/x11_init.c"
-	"src/ThirdParty/GLFW/x11_monitor.c"
-	"src/ThirdParty/GLFW/x11_window.c"
-	"src/ThirdParty/GLFW/xkb_unicode.c"
 	"src/ThirdParty/RtAudio/RtAudio.cpp")
+
 
 if(WIN32)
 	set(SOURCE_FILES_PLATFORM
@@ -773,7 +767,14 @@ elseif(APPLE)
 		"src/Siv3D-Platform/macOS/Webcam/SivWebcam_Platform.mm"
 		"src/Siv3D-Platform/macOS/Process/NSTaskWrapper.mm"
 		"src/Siv3D-Platform/macOS/Process/ChildProcessDetail.mm"
-		"src/Siv3D-Platform/macOS/Clipboard/CClipboard.mm")
+		"src/Siv3D-Platform/macOS/Clipboard/CClipboard.mm"
+
+		"src/ThirdParty/GLFW/cocoa_init.m"
+		"src/ThirdParty/GLFW/cocoa_joystick.m"
+		"src/ThirdParty/GLFW/cocoa_monitor.m"
+		"src/ThirdParty/GLFW/cocoa_time.c"
+		"src/ThirdParty/GLFW/cocoa_window.m"
+		"src/ThirdParty/GLFW/nsgl_context.m")
 elseif(UNIX)
 	set(SOURCE_FILES_PLATFORM
 		"src/Siv3D-Platform/Linux/Siv3DMain.cpp"
@@ -846,7 +847,15 @@ elseif(UNIX)
 		"src/Siv3D-Platform/Linux/VideoWriter/VideoWriterDetail.cpp"
 		"src/Siv3D-Platform/Linux/Window/CWindow.cpp"
 		"src/Siv3D-Platform/Linux/WritableMemoryMapping/WritableMemoryMappingDetail.cpp"
-		"src/Siv3D-Platform/Linux/XInput/CXInput.cpp")
+		"src/Siv3D-Platform/Linux/XInput/CXInput.cpp"
+	
+		"src/ThirdParty/GLFW/glx_context.c"
+		"src/ThirdParty/GLFW/linux_joystick.c"
+		"src/ThirdParty/GLFW/posix_time.c"
+		"src/ThirdParty/GLFW/x11_init.c"
+		"src/ThirdParty/GLFW/x11_monitor.c"
+		"src/ThirdParty/GLFW/x11_window.c"
+		"src/ThirdParty/GLFW/xkb_unicode.c")
 endif()
 
 # OSで分岐
@@ -861,13 +870,7 @@ else()
 	message(FATAL_ERROR "Unsupported OS")
 endif()
 
-if(LINUX)
-	# Linux版のみサードパーティ製ライブラリをソースファイルからビルド
-	set(SOURCE_FILES ${SOURCE_FILES_SIV3D} ${SOURCE_FILES_THIRD_PARTY} ${SOURCE_FILES_PLATFORM})
-else()
-	# Windows/Mac版はコンパイル済みライブラリを使用するためサードパーティ製ライブラリのソースファイルは除外
-	set(SOURCE_FILES ${SOURCE_FILES_SIV3D} ${SOURCE_FILES_PLATFORM})
-endif()
+set(SOURCE_FILES ${SOURCE_FILES_SIV3D} ${SOURCE_FILES_THIRD_PARTY} ${SOURCE_FILES_PLATFORM})
 
 add_library(Siv3D STATIC ${SOURCE_FILES})
 
@@ -911,6 +914,7 @@ if(MSVC)
 else()
 	# Mac/Linux版
 	if(APPLE)
+		target_compile_options(Siv3D PRIVATE -target x86_64-apple-macos10.14)
 		set(PLATFORM_FLAGS "-D__MACOSX_CORE__ -D_GLFW_COCOA")
 	else()
 		set(PLATFORM_FLAGS "-D_GLFW_X11")
