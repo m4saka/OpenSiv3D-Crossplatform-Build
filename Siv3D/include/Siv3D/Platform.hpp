@@ -180,7 +180,7 @@ namespace s3d
 //
 //////////////////////////////////////////////////
 
-# if SIV3D_PLATFORM(WINDOWS) && (_MSC_FULL_VER < 192428314)
+# if defined(_MSC_FULL_VER) && (_MSC_FULL_VER < 192428314) && !defined(__clang__)
 
 	# error Visual Studio 2019 16.4 or later is required to build this project.
 
