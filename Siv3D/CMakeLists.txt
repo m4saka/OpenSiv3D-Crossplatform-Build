@@ -1,46 +1,14 @@
 cmake_minimum_required (VERSION 3.0)
 
-find_package(PkgConfig)
-
 project(OpenSiv3D CXX)
 enable_language(C)
 
-set(CMAKE_CXX_FLAGS "-std=c++17 -Wall -Wextra -Wno-unknown-pragmas -fPIC -msse4.1 -D_GLFW_X11")
-set(CMAKE_CXX_FLAGS_DEBUG "-g3 -O0 -pg -DDEBUG")
-set(CMAKE_CXX_FLAGS_RELEASE "-O2 -DNDEBUG -march=x86-64")
-set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "-g3 -Og -pg")
-set(CMAKE_CXX_FLAGS_MINSIZEREL "-Os -DNDEBUG -march=x86-64")
-
-set(CMAKE_C_FLAGS "-Wall -Wextra -Wno-unknown-pragmas -fPIC -msse4.1 -D_GLFW_X11")
-set(CMAKE_C_FLAGS_DEBUG "-g3 -O0 -pg -DDEBUG")
-set(CMAKE_C_FLAGS_RELEASE "-O2 -DNDEBUG -march=x86-64")
-set(CMAKE_C_FLAGS_RELWITHDEBINFO "-g3 -Og -pg")
-set(CMAKE_C_FLAGS_MINSIZEREL "-Os -DNDEBUG -march=x86-64")
-
-if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
-	add_compile_options ("-fcolor-diagnostics")
-elseif("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
-	add_compile_options ("-fdiagnostics-color=always")
-endif()
-
 #set(CMAKE_BUILD_TYPE Release)
 
-pkg_check_modules(LIBSIV3D REQUIRED glib-2.0 gobject-2.0 gio-2.0 gl libpng libturbojpeg x11 xi xinerama xcursor xrandr gl glu freetype2 openal opencv4 ogg vorbis zlib)
-include_directories(
-	"/usr/include"
-
-	"include"
-	"src/Siv3D"
-	"src/Siv3D-Platform/Linux"
-	"include/ThirdParty"
-	"src/ThirdParty"
-
-	"src/ThirdParty/asio"
-	"src/ThirdParty/zstd"
-	"src/ThirdParty/zstd/common"
-
-	${LIBSIV3D_INCLUDE_DIRS}
-)
+if(NOT MSVC)
+	find_package(PkgConfig)
+	pkg_check_modules(LIBSIV3D REQUIRED glib-2.0 gobject-2.0 gio-2.0 gl libpng libturbojpeg x11 xi xinerama xcursor xrandr gl glu freetype2 openal opencv4 ogg vorbis zlib)
+endif()
 
 set(SOURCE_FILES
 	"src/Siv3D/AABB/SivAABB.cpp"
@@ -428,78 +396,6 @@ set(SOURCE_FILES
 	"src/Siv3D/ZIPReader/ZIPReaderDetail.cpp"
 	"src/Siv3D/Zlib/SivZlib.cpp"
 
-	"src/Siv3D-Platform/Linux/Siv3DMain.cpp"
-
-	"src/Siv3D-Platform/Linux/Audio/AL/CAudio_AL.cpp"
-	"src/Siv3D-Platform/Linux/Audio/AudioFactory.cpp"
-	"src/Siv3D-Platform/Linux/AudioFormat/AAC/AudioFormat_AAC.cpp"
-	"src/Siv3D-Platform/Linux/AudioFormat/MP3/AudioFormat_MP3.cpp"
-	"src/Siv3D-Platform/Linux/BinaryReader/BinaryReaderDetail.cpp"
-	"src/Siv3D-Platform/Linux/BinaryWriter/BinaryWriterDetail.cpp"
-	"src/Siv3D-Platform/Linux/ByteArray/ByteArrayDetail_Platform.cpp"
-	"src/Siv3D-Platform/Linux/Clipboard/CClipboard.cpp"
-	"src/Siv3D-Platform/Linux/Codec/CCodec.cpp"
-	"src/Siv3D-Platform/Linux/Console/CConsole.cpp"
-	"src/Siv3D-Platform/Linux/ConstantBuffer/GL/GLConstantBuffer.cpp"
-	"src/Siv3D-Platform/Linux/ConstantBuffer/SivConstantBuffer.cpp"
-	"src/Siv3D-Platform/Linux/Cursor/CCursor.cpp"
-	"src/Siv3D-Platform/Linux/DLL/SivDLL.cpp"
-	"src/Siv3D-Platform/Linux/Date/SivDate_Platform.cpp"
-	"src/Siv3D-Platform/Linux/DateTime/SivDateTime_Platform.cpp"
-	"src/Siv3D-Platform/Linux/Dialog/SivDialog_Platform.cpp"
-	"src/Siv3D-Platform/Linux/DirectoryWatcher/DirectoryWatcherDetail.cpp"
-	"src/Siv3D-Platform/Linux/DragDrop/CDragDrop.cpp"
-	"src/Siv3D-Platform/Linux/EngineLog/SivEngineLog.cpp"
-	"src/Siv3D-Platform/Linux/EngineMessageBox/SivEngineMessageBox.cpp"
-	"src/Siv3D-Platform/Linux/FileSystem/SivFileSystem_Platform.cpp"
-	"src/Siv3D-Platform/Linux/Gamepad/CGamepad.cpp"
-	"src/Siv3D-Platform/Linux/Gamepad/SivGamepad_Platform.cpp"
-	"src/Siv3D-Platform/Linux/Graphics/GL/BlendState/GLBlendState.cpp"
-	"src/Siv3D-Platform/Linux/Graphics/GL/CGraphics_GL.cpp"
-	"src/Siv3D-Platform/Linux/Graphics/GL/RasterizerState/GLRasterizerState.cpp"
-	"src/Siv3D-Platform/Linux/Graphics/GL/SamplerState/GLSamplerState.cpp"
-	"src/Siv3D-Platform/Linux/Graphics/GL/SceneTexture.cpp"
-	"src/Siv3D-Platform/Linux/Graphics/GraphicsFactory.cpp"
-	"src/Siv3D-Platform/Linux/Graphics/SivGraphics_Platform.cpp"
-	"src/Siv3D-Platform/Linux/Keyboard/CKeyboard.cpp"
-	"src/Siv3D-Platform/Linux/Logger/CLogger.cpp"
-	"src/Siv3D-Platform/Linux/MemoryMapping/MemoryMappingDetail.cpp"
-	"src/Siv3D-Platform/Linux/MessageBox/SivMessageBox.cpp"
-	"src/Siv3D-Platform/Linux/Microphone/MicrophoneDetail.cpp"
-	"src/Siv3D-Platform/Linux/Monitor/SivMonitor.cpp"
-	"src/Siv3D-Platform/Linux/Mouse/CMouse.cpp"
-	"src/Siv3D-Platform/Linux/NLP/SivNLP_Japanese.cpp"
-	"src/Siv3D-Platform/Linux/Network/CNetwork.cpp"
-	"src/Siv3D-Platform/Linux/PowerStatus/SivPowerStatus.cpp"
-	"src/Siv3D-Platform/Linux/Process/ChildProcessDetail.cpp"
-	"src/Siv3D-Platform/Linux/Renderer2D/GL/CRenderer2D_GL.cpp"
-	"src/Siv3D-Platform/Linux/Renderer2D/GL/GLRenderer2DCommand.cpp"
-	"src/Siv3D-Platform/Linux/Renderer2D/GL/GLSpriteBatch.cpp"
-	"src/Siv3D-Platform/Linux/Renderer2D/Renderer2DFactory.cpp"
-	"src/Siv3D-Platform/Linux/Resource/SivResource.cpp"
-	"src/Siv3D-Platform/Linux/ScreenCapture/CScreenCapture_Platform.cpp"
-	"src/Siv3D-Platform/Linux/Shader/GL/CShader_GL.cpp"
-	"src/Siv3D-Platform/Linux/Shader/GL/PixelShader_GL.cpp"
-	"src/Siv3D-Platform/Linux/Shader/GL/VertexShader_GL.cpp"
-	"src/Siv3D-Platform/Linux/Shader/ShaderFactory.cpp"
-	"src/Siv3D-Platform/Linux/Siv3DMain.cpp"
-	"src/Siv3D-Platform/Linux/System/CSystem.cpp"
-	"src/Siv3D-Platform/Linux/System/SivSystem_Platform.cpp"
-	"src/Siv3D-Platform/Linux/TextInput/CTextInput.cpp"
-	"src/Siv3D-Platform/Linux/TextReader/TextReaderDetail_Platform.cpp"
-	"src/Siv3D-Platform/Linux/TextToSpeech/CTextToSpeech.cpp"
-	"src/Siv3D-Platform/Linux/Texture/GL/CTexture_GL.cpp"
-	"src/Siv3D-Platform/Linux/Texture/GL/Texture_GL.cpp"
-	"src/Siv3D-Platform/Linux/Texture/TextureFactory.cpp"
-	"src/Siv3D-Platform/Linux/Time/SivTime.cpp"
-	"src/Siv3D-Platform/Linux/ToastNotification/CToastNotification.cpp"
-	"src/Siv3D-Platform/Linux/ToastNotification/ToastNotificationFactory.cpp"
-	"src/Siv3D-Platform/Linux/Unicode/SivUnicode_Platform.cpp"
-	"src/Siv3D-Platform/Linux/VideoWriter/VideoWriterDetail.cpp"
-	"src/Siv3D-Platform/Linux/Window/CWindow.cpp"
-	"src/Siv3D-Platform/Linux/WritableMemoryMapping/WritableMemoryMappingDetail.cpp"
-	"src/Siv3D-Platform/Linux/XInput/CXInput.cpp"
-
 	"src/ThirdParty/angelscript/as_atomic.cpp"
 	"src/ThirdParty/angelscript/as_builder.cpp"
 	"src/ThirdParty/angelscript/as_bytecode.cpp"
@@ -722,8 +618,283 @@ set(SOURCE_FILES
 	"src/ThirdParty/RtAudio/RtAudio.cpp"
 )
 
-add_library(Siv3D STATIC ${SOURCE_FILES})
+if(WIN32)
+	set(SOURCE_FILES_PLATFORM
+		"src/Siv3D-Platform/WindowsDesktop/Siv3DMain.cpp"
 
-target_link_libraries(Siv3D
+		"src/Siv3D-Platform/WindowsDesktop/Audio/AudioFactory.cpp"
+		"src/Siv3D-Platform/WindowsDesktop/Audio/X27/Audio_X27.cpp"
+		"src/Siv3D-Platform/WindowsDesktop/Audio/X27/CAudio_X27.cpp"
+		"src/Siv3D-Platform/WindowsDesktop/Audio/X28/Audio_X28.cpp"
+		"src/Siv3D-Platform/WindowsDesktop/Audio/X28/CAudio_X28.cpp"
+		"src/Siv3D-Platform/WindowsDesktop/AudioFormat/AAC/AudioFormat_AAC.cpp"
+		"src/Siv3D-Platform/WindowsDesktop/AudioFormat/MP3/AudioFormat_MP3.cpp"
+		"src/Siv3D-Platform/WindowsDesktop/BinaryReader/BinaryReaderDetail.cpp"
+		"src/Siv3D-Platform/WindowsDesktop/BinaryWriter/BinaryWriterDetail.cpp"
+		"src/Siv3D-Platform/WindowsDesktop/ByteArray/ByteArrayDetail_Platform.cpp"
+		"src/Siv3D-Platform/WindowsDesktop/Clipboard/CClipboard.cpp"
+		"src/Siv3D-Platform/WindowsDesktop/Codec/CCodec.cpp"
+		"src/Siv3D-Platform/WindowsDesktop/Console/CConsole.cpp"
+		"src/Siv3D-Platform/WindowsDesktop/ConstantBuffer/D3D11/D3D11ConstantBuffer.cpp"
+		"src/Siv3D-Platform/WindowsDesktop/ConstantBuffer/SivConstantBuffer.cpp"
+		"src/Siv3D-Platform/WindowsDesktop/Cursor/CCursor.cpp"
+		"src/Siv3D-Platform/WindowsDesktop/Date/SivDate_Platform.cpp"
+		"src/Siv3D-Platform/WindowsDesktop/DateTime/SivDateTime_Platform.cpp"
+		"src/Siv3D-Platform/WindowsDesktop/Dialog/SivDialog_Platform.cpp"
+		"src/Siv3D-Platform/WindowsDesktop/DirectoryWatcher/DirectoryWatcherDetail.cpp"
+		"src/Siv3D-Platform/WindowsDesktop/DLL/SivDLL.cpp"
+		"src/Siv3D-Platform/WindowsDesktop/DragDrop/CDragDrop.cpp"
+		"src/Siv3D-Platform/WindowsDesktop/EngineLog/SivEngineLog.cpp"
+		"src/Siv3D-Platform/WindowsDesktop/EngineMessageBox/SivEngineMessageBox.cpp"
+		"src/Siv3D-Platform/WindowsDesktop/FileSystem/SivFileSystem_Platform.cpp"
+		"src/Siv3D-Platform/WindowsDesktop/Gamepad/CGamepad.cpp"
+		"src/Siv3D-Platform/WindowsDesktop/Gamepad/SivGamepad_Platform.cpp"
+		"src/Siv3D-Platform/WindowsDesktop/Graphics/D3D11/CGraphics_D3D11.cpp"
+		"src/Siv3D-Platform/WindowsDesktop/Graphics/D3D11/D3D11BlendState.cpp"
+		"src/Siv3D-Platform/WindowsDesktop/Graphics/D3D11/D3D11DepthStencilState.cpp"
+		"src/Siv3D-Platform/WindowsDesktop/Graphics/D3D11/D3D11Device.cpp"
+		"src/Siv3D-Platform/WindowsDesktop/Graphics/D3D11/D3D11RasterizerState.cpp"
+		"src/Siv3D-Platform/WindowsDesktop/Graphics/D3D11/D3D11RenderTarget.cpp"
+		"src/Siv3D-Platform/WindowsDesktop/Graphics/D3D11/D3D11SamplerState.cpp"
+		"src/Siv3D-Platform/WindowsDesktop/Graphics/D3D11/D3D11ScreenCapture.cpp"
+		"src/Siv3D-Platform/WindowsDesktop/Graphics/D3D11/D3D11SwapChain.cpp"
+		"src/Siv3D-Platform/WindowsDesktop/Graphics/GraphicsFactory.cpp"
+		"src/Siv3D-Platform/WindowsDesktop/Graphics/SivGraphics_Platform.cpp"
+		"src/Siv3D-Platform/WindowsDesktop/Keyboard/CKeyboard.cpp"
+		"src/Siv3D-Platform/WindowsDesktop/Logger/CLogger.cpp"
+		"src/Siv3D-Platform/WindowsDesktop/MemoryMapping/MemoryMappingDetail.cpp"
+		"src/Siv3D-Platform/WindowsDesktop/MessageBox/SivMessageBox.cpp"
+		"src/Siv3D-Platform/WindowsDesktop/Microphone/MicrophoneDetail.cpp"
+		"src/Siv3D-Platform/WindowsDesktop/Monitor/SivMonitor.cpp"
+		"src/Siv3D-Platform/WindowsDesktop/Mouse/CMouse.cpp"
+		"src/Siv3D-Platform/WindowsDesktop/Network/CNetwork.cpp"
+		"src/Siv3D-Platform/WindowsDesktop/NLP/SivNLP_Japanese.cpp"
+		"src/Siv3D-Platform/WindowsDesktop/PowerStatus/SivPowerStatus.cpp"
+		"src/Siv3D-Platform/WindowsDesktop/Process/ChildProcessDetail.cpp"
+		"src/Siv3D-Platform/WindowsDesktop/Renderer2D/D3D11/CRenderer2D_D3D11.cpp"
+		"src/Siv3D-Platform/WindowsDesktop/Renderer2D/D3D11/D3D11Renderer2DCommand.cpp"
+		"src/Siv3D-Platform/WindowsDesktop/Renderer2D/D3D11/D3D11SpriteBatch.cpp"
+		"src/Siv3D-Platform/WindowsDesktop/Renderer2D/Renderer2DFactory.cpp"
+		"src/Siv3D-Platform/WindowsDesktop/Resource/SivResource.cpp"
+		"src/Siv3D-Platform/WindowsDesktop/ScreenCapture/CScreenCapture_Platform.cpp"
+		"src/Siv3D-Platform/WindowsDesktop/Shader/D3D11/CShader_D3D11.cpp"
+		"src/Siv3D-Platform/WindowsDesktop/Shader/D3D11/PixelShader_D3D11.cpp"
+		"src/Siv3D-Platform/WindowsDesktop/Shader/D3D11/VertexShader_D3D11.cpp"
+		"src/Siv3D-Platform/WindowsDesktop/Shader/ShaderFactory.cpp"
+		"src/Siv3D-Platform/WindowsDesktop/Shader/SivShader_Platform.cpp"
+		"src/Siv3D-Platform/WindowsDesktop/System/CSystem.cpp"
+		"src/Siv3D-Platform/WindowsDesktop/System/SivSystem_Platform.cpp"
+		"src/Siv3D-Platform/WindowsDesktop/TextInput/CTextInput.cpp"
+		"src/Siv3D-Platform/WindowsDesktop/TextInput/WindowsIME.cpp"
+		"src/Siv3D-Platform/WindowsDesktop/TextReader/TextReaderDetail_Platform.cpp"
+		"src/Siv3D-Platform/WindowsDesktop/TextToSpeech/CTextToSpeech.cpp"
+		"src/Siv3D-Platform/WindowsDesktop/Texture/D3D11/CTexture_D3D11.cpp"
+		"src/Siv3D-Platform/WindowsDesktop/Texture/D3D11/Texture2DDesc_D3D11.cpp"
+		"src/Siv3D-Platform/WindowsDesktop/Texture/D3D11/Texture_D3D11.cpp"
+		"src/Siv3D-Platform/WindowsDesktop/Texture/TextureFactory.cpp"
+		"src/Siv3D-Platform/WindowsDesktop/Time/SivTime.cpp"
+		"src/Siv3D-Platform/WindowsDesktop/ToastNotification/CToastNotification.cpp"
+		"src/Siv3D-Platform/WindowsDesktop/ToastNotification/ToastNotificationFactory.cpp"
+		"src/Siv3D-Platform/WindowsDesktop/Unicode/SivUnicode_Platform.cpp"
+		"src/Siv3D-Platform/WindowsDesktop/VideoWriter/VideoWriterDetail.cpp"
+		"src/Siv3D-Platform/WindowsDesktop/Webcam/SivWebcam_Platform.cpp"
+		"src/Siv3D-Platform/WindowsDesktop/Window/CWindow.cpp"
+		"src/Siv3D-Platform/WindowsDesktop/Window/HighDPI.cpp"
+		"src/Siv3D-Platform/WindowsDesktop/Window/WindowProc.cpp"
+		"src/Siv3D-Platform/WindowsDesktop/WritableMemoryMapping/WritableMemoryMappingDetail.cpp"
+		"src/Siv3D-Platform/WindowsDesktop/XInput/CXInput.cpp")
+elseif(APPLE)
+	set(SOURCE_FILES_PLATFORM
+		"src/Siv3D-Platform/macOS/Siv3DMain.cpp"
+
+		"src/Siv3D-Platform/macOS/Audio/AL/CAudio_AL.cpp"
+		"src/Siv3D-Platform/macOS/Audio/AudioFactory.cpp"
+		"src/Siv3D-Platform/macOS/AudioFormat/AAC/AudioFormat_AAC.cpp"
+		"src/Siv3D-Platform/macOS/AudioFormat/MP3/AudioFormat_MP3.cpp"
+		"src/Siv3D-Platform/macOS/BinaryReader/BinaryReaderDetail.cpp"
+		"src/Siv3D-Platform/macOS/BinaryWriter/BinaryWriterDetail.cpp"
+		"src/Siv3D-Platform/macOS/ByteArray/ByteArrayDetail_Platform.cpp"
+		"src/Siv3D-Platform/macOS/Codec/CCodec.cpp"
+		"src/Siv3D-Platform/macOS/Console/CConsole.cpp"
+		"src/Siv3D-Platform/macOS/ConstantBuffer/GL/GLConstantBuffer.cpp"
+		"src/Siv3D-Platform/macOS/ConstantBuffer/SivConstantBuffer.cpp"
+		"src/Siv3D-Platform/macOS/Date/SivDate_Platform.cpp"
+		"src/Siv3D-Platform/macOS/DateTime/SivDateTime_Platform.cpp"
+		"src/Siv3D-Platform/macOS/DirectoryWatcher/DirectoryWatcherDetail.cpp"
+		"src/Siv3D-Platform/macOS/DLL/SivDLL.cpp"
+		"src/Siv3D-Platform/macOS/DragDrop/CDragDrop.cpp"
+		"src/Siv3D-Platform/macOS/EngineLog/SivEngineLog.cpp"
+		"src/Siv3D-Platform/macOS/EngineMessageBox/SivEngineMessageBox.cpp"
+		"src/Siv3D-Platform/macOS/Gamepad/CGamepad.cpp"
+		"src/Siv3D-Platform/macOS/Gamepad/SivGamepad_Platform.cpp"
+		"src/Siv3D-Platform/macOS/Graphics/GL/BlendState/GLBlendState.cpp"
+		"src/Siv3D-Platform/macOS/Graphics/GL/CGraphics_GL.cpp"
+		"src/Siv3D-Platform/macOS/Graphics/GL/RasterizerState/GLRasterizerState.cpp"
+		"src/Siv3D-Platform/macOS/Graphics/GL/SamplerState/GLSamplerState.cpp"
+		"src/Siv3D-Platform/macOS/Graphics/GL/SceneTexture.cpp"
+		"src/Siv3D-Platform/macOS/Graphics/GraphicsFactory.cpp"
+		"src/Siv3D-Platform/macOS/Graphics/SivGraphics_Platform.cpp"
+		"src/Siv3D-Platform/macOS/Keyboard/CKeyboard.cpp"
+		"src/Siv3D-Platform/macOS/Logger/CLogger.cpp"
+		"src/Siv3D-Platform/macOS/MemoryMapping/MemoryMappingDetail.cpp"
+		"src/Siv3D-Platform/macOS/Microphone/MicrophoneDetail.cpp"
+		"src/Siv3D-Platform/macOS/Monitor/SivMonitor.cpp"
+		"src/Siv3D-Platform/macOS/Mouse/CMouse.cpp"
+		"src/Siv3D-Platform/macOS/Network/CNetwork.cpp"
+		"src/Siv3D-Platform/macOS/NLP/SivNLP_Japanese.cpp"
+		"src/Siv3D-Platform/macOS/Renderer2D/GL/CRenderer2D_GL.cpp"
+		"src/Siv3D-Platform/macOS/Renderer2D/GL/GLRenderer2DCommand.cpp"
+		"src/Siv3D-Platform/macOS/Renderer2D/GL/GLSpriteBatch.cpp"
+		"src/Siv3D-Platform/macOS/Renderer2D/Renderer2DFactory.cpp"
+		"src/Siv3D-Platform/macOS/Resource/SivResource.cpp"
+		"src/Siv3D-Platform/macOS/ScreenCapture/CScreenCapture_Platform.cpp"
+		"src/Siv3D-Platform/macOS/Shader/GL/CShader_GL.cpp"
+		"src/Siv3D-Platform/macOS/Shader/GL/PixelShader_GL.cpp"
+		"src/Siv3D-Platform/macOS/Shader/GL/VertexShader_GL.cpp"
+		"src/Siv3D-Platform/macOS/Shader/ShaderFactory.cpp"
+		"src/Siv3D-Platform/macOS/System/CSystem.cpp"
+		"src/Siv3D-Platform/macOS/TextInput/CTextInput.cpp"
+		"src/Siv3D-Platform/macOS/Texture/GL/CTexture_GL.cpp"
+		"src/Siv3D-Platform/macOS/Texture/GL/Texture_GL.cpp"
+		"src/Siv3D-Platform/macOS/Texture/TextureFactory.cpp"
+		"src/Siv3D-Platform/macOS/Time/SivTime.cpp"
+		"src/Siv3D-Platform/macOS/ToastNotification/CToastNotification.cpp"
+		"src/Siv3D-Platform/macOS/ToastNotification/ToastNotificationFactory.cpp"
+		"src/Siv3D-Platform/macOS/Unicode/SivUnicode_Platform.cpp"
+		"src/Siv3D-Platform/macOS/VideoWriter/VideoWriterDetail.cpp"
+		"src/Siv3D-Platform/macOS/Window/CWindow.cpp"
+		"src/Siv3D-Platform/macOS/WritableMemoryMapping/WritableMemoryMappingDetail.cpp"
+		"src/Siv3D-Platform/macOS/XInput/CXInput.cpp")
+elseif(UNIX)
+	set(SOURCE_FILES_PLATFORM
+		"src/Siv3D-Platform/Linux/Siv3DMain.cpp"
+
+		"src/Siv3D-Platform/Linux/Audio/AL/CAudio_AL.cpp"
+		"src/Siv3D-Platform/Linux/Audio/AudioFactory.cpp"
+		"src/Siv3D-Platform/Linux/AudioFormat/AAC/AudioFormat_AAC.cpp"
+		"src/Siv3D-Platform/Linux/AudioFormat/MP3/AudioFormat_MP3.cpp"
+		"src/Siv3D-Platform/Linux/BinaryReader/BinaryReaderDetail.cpp"
+		"src/Siv3D-Platform/Linux/BinaryWriter/BinaryWriterDetail.cpp"
+		"src/Siv3D-Platform/Linux/ByteArray/ByteArrayDetail_Platform.cpp"
+		"src/Siv3D-Platform/Linux/Clipboard/CClipboard.cpp"
+		"src/Siv3D-Platform/Linux/Codec/CCodec.cpp"
+		"src/Siv3D-Platform/Linux/Console/CConsole.cpp"
+		"src/Siv3D-Platform/Linux/ConstantBuffer/GL/GLConstantBuffer.cpp"
+		"src/Siv3D-Platform/Linux/ConstantBuffer/SivConstantBuffer.cpp"
+		"src/Siv3D-Platform/Linux/Cursor/CCursor.cpp"
+		"src/Siv3D-Platform/Linux/DLL/SivDLL.cpp"
+		"src/Siv3D-Platform/Linux/Date/SivDate_Platform.cpp"
+		"src/Siv3D-Platform/Linux/DateTime/SivDateTime_Platform.cpp"
+		"src/Siv3D-Platform/Linux/Dialog/SivDialog_Platform.cpp"
+		"src/Siv3D-Platform/Linux/DirectoryWatcher/DirectoryWatcherDetail.cpp"
+		"src/Siv3D-Platform/Linux/DragDrop/CDragDrop.cpp"
+		"src/Siv3D-Platform/Linux/EngineLog/SivEngineLog.cpp"
+		"src/Siv3D-Platform/Linux/EngineMessageBox/SivEngineMessageBox.cpp"
+		"src/Siv3D-Platform/Linux/FileSystem/SivFileSystem_Platform.cpp"
+		"src/Siv3D-Platform/Linux/Gamepad/CGamepad.cpp"
+		"src/Siv3D-Platform/Linux/Gamepad/SivGamepad_Platform.cpp"
+		"src/Siv3D-Platform/Linux/Graphics/GL/BlendState/GLBlendState.cpp"
+		"src/Siv3D-Platform/Linux/Graphics/GL/CGraphics_GL.cpp"
+		"src/Siv3D-Platform/Linux/Graphics/GL/RasterizerState/GLRasterizerState.cpp"
+		"src/Siv3D-Platform/Linux/Graphics/GL/SamplerState/GLSamplerState.cpp"
+		"src/Siv3D-Platform/Linux/Graphics/GL/SceneTexture.cpp"
+		"src/Siv3D-Platform/Linux/Graphics/GraphicsFactory.cpp"
+		"src/Siv3D-Platform/Linux/Graphics/SivGraphics_Platform.cpp"
+		"src/Siv3D-Platform/Linux/Keyboard/CKeyboard.cpp"
+		"src/Siv3D-Platform/Linux/Logger/CLogger.cpp"
+		"src/Siv3D-Platform/Linux/MemoryMapping/MemoryMappingDetail.cpp"
+		"src/Siv3D-Platform/Linux/MessageBox/SivMessageBox.cpp"
+		"src/Siv3D-Platform/Linux/Microphone/MicrophoneDetail.cpp"
+		"src/Siv3D-Platform/Linux/Monitor/SivMonitor.cpp"
+		"src/Siv3D-Platform/Linux/Mouse/CMouse.cpp"
+		"src/Siv3D-Platform/Linux/NLP/SivNLP_Japanese.cpp"
+		"src/Siv3D-Platform/Linux/Network/CNetwork.cpp"
+		"src/Siv3D-Platform/Linux/PowerStatus/SivPowerStatus.cpp"
+		"src/Siv3D-Platform/Linux/Process/ChildProcessDetail.cpp"
+		"src/Siv3D-Platform/Linux/Renderer2D/GL/CRenderer2D_GL.cpp"
+		"src/Siv3D-Platform/Linux/Renderer2D/GL/GLRenderer2DCommand.cpp"
+		"src/Siv3D-Platform/Linux/Renderer2D/GL/GLSpriteBatch.cpp"
+		"src/Siv3D-Platform/Linux/Renderer2D/Renderer2DFactory.cpp"
+		"src/Siv3D-Platform/Linux/Resource/SivResource.cpp"
+		"src/Siv3D-Platform/Linux/ScreenCapture/CScreenCapture_Platform.cpp"
+		"src/Siv3D-Platform/Linux/Shader/GL/CShader_GL.cpp"
+		"src/Siv3D-Platform/Linux/Shader/GL/PixelShader_GL.cpp"
+		"src/Siv3D-Platform/Linux/Shader/GL/VertexShader_GL.cpp"
+		"src/Siv3D-Platform/Linux/Shader/ShaderFactory.cpp"
+		"src/Siv3D-Platform/Linux/Siv3DMain.cpp"
+		"src/Siv3D-Platform/Linux/System/CSystem.cpp"
+		"src/Siv3D-Platform/Linux/System/SivSystem_Platform.cpp"
+		"src/Siv3D-Platform/Linux/TextInput/CTextInput.cpp"
+		"src/Siv3D-Platform/Linux/TextReader/TextReaderDetail_Platform.cpp"
+		"src/Siv3D-Platform/Linux/TextToSpeech/CTextToSpeech.cpp"
+		"src/Siv3D-Platform/Linux/Texture/GL/CTexture_GL.cpp"
+		"src/Siv3D-Platform/Linux/Texture/GL/Texture_GL.cpp"
+		"src/Siv3D-Platform/Linux/Texture/TextureFactory.cpp"
+		"src/Siv3D-Platform/Linux/Time/SivTime.cpp"
+		"src/Siv3D-Platform/Linux/ToastNotification/CToastNotification.cpp"
+		"src/Siv3D-Platform/Linux/ToastNotification/ToastNotificationFactory.cpp"
+		"src/Siv3D-Platform/Linux/Unicode/SivUnicode_Platform.cpp"
+		"src/Siv3D-Platform/Linux/VideoWriter/VideoWriterDetail.cpp"
+		"src/Siv3D-Platform/Linux/Window/CWindow.cpp"
+		"src/Siv3D-Platform/Linux/WritableMemoryMapping/WritableMemoryMappingDetail.cpp"
+		"src/Siv3D-Platform/Linux/XInput/CXInput.cpp")
+endif()
+
+add_library(Siv3D STATIC ${SOURCE_FILES} ${SOURCE_FILES_PLATFORM})
+
+if(WIN32)
+	set(PLATFORM_DIR "WindowsDesktop")
+elseif(APPLE)
+	set(PLATFORM_DIR "macOS")
+elseif(UNIX)
+	set(PLATFORM_DIR "Linux")
+else()
+	message(FATAL_ERROR "Unsupported OS")
+endif()
+
+target_include_directories(Siv3D PRIVATE
+	"/usr/include"
+
+	"include"
+	"src/Siv3D"
+	"src/Siv3D-Platform/${PLATFORM_DIR}"
+	"include/ThirdParty"
+	"src/ThirdParty"
+
+	"src/ThirdParty/asio"
+	"src/ThirdParty/zstd"
+	"src/ThirdParty/zstd/common"
+	"src/ThirdParty/freetype"
+
+	${LIBSIV3D_INCLUDE_DIRS}
 )
 
+if(MSVC)
+	target_compile_options(Siv3D PRIVATE /std:c++latest /W4 /utf-8)
+	target_include_directories(Siv3D PRIVATE "../Dependencies/boost_1_72_0")
+
+	set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /MT")
+	set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /MTd")
+
+	set(CMAKE_C_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /MT")
+	set(CMAKE_C_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /MTd")
+else()
+	target_compile_options(Siv3D PRIVATE "-std=c++17 -Wall -Wextra -Wno-unknown-pragmas -fPIC -msse4.1 -D_GLFW_X11")
+
+	set(CMAKE_CXX_FLAGS_DEBUG "-g3 -O0 -pg -DDEBUG")
+	set(CMAKE_CXX_FLAGS_RELEASE "-O2 -DNDEBUG -march=x86-64")
+	set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "-g3 -Og -pg")
+	set(CMAKE_CXX_FLAGS_MINSIZEREL "-Os -DNDEBUG -march=x86-64")
+
+	set(CMAKE_C_FLAGS "-Wall -Wextra -Wno-unknown-pragmas -fPIC -msse4.1 -D_GLFW_X11")
+	set(CMAKE_C_FLAGS_DEBUG "-g3 -O0 -pg -DDEBUG")
+	set(CMAKE_C_FLAGS_RELEASE "-O2 -DNDEBUG -march=x86-64")
+	set(CMAKE_C_FLAGS_RELWITHDEBINFO "-g3 -Og -pg")
+	set(CMAKE_C_FLAGS_MINSIZEREL "-Os -DNDEBUG -march=x86-64")
+endif()
+
+if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+	target_compile_options(Siv3D PRIVATE "-fcolor-diagnostics")
+elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+	target_compile_options(Siv3D PRIVATE "-fdiagnostics-color=always")
+endif()
