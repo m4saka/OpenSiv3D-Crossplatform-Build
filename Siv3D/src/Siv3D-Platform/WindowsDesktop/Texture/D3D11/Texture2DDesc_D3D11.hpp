@@ -1,4 +1,4 @@
-//-----------------------------------------------
+ï»¿//-----------------------------------------------
 //
 //	This file is part of the Siv3D Engine.
 //
@@ -27,10 +27,10 @@ namespace s3d
 
 		TextureDesc desc = TextureDesc::Unmipped;
 
-		// ƒfƒtƒHƒ‹ƒg‚Í 1
+		// ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã¯ 1
 		uint32 mipLevels = 1;
 
-		// ƒfƒtƒHƒ‹ƒg‚Í 1
+		// ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã¯ 1
 		uint32 multisampleCount = 1;
 
 		uint32 multismapleQuality = 0;

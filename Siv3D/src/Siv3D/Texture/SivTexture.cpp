@@ -1,4 +1,4 @@
-//-----------------------------------------------
+ï»¿//-----------------------------------------------
 //
 //	This file is part of the Siv3D Engine.
 //
@@ -651,7 +651,7 @@ namespace s3d
 
 		const double w = this->width();
 		const double h = this->height();
-		double ws = width / w;	// ‰½% scaling‚·‚é‚©
+		double ws = width / w;	// ä½•% scalingã™ã‚‹ã‹
 		double hs = height / h;
 
 		double targetWidth, targetHeight;

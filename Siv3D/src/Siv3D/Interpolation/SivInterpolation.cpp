@@ -1,4 +1,4 @@
-//-----------------------------------------------
+ï»¿//-----------------------------------------------
 //
 //	This file is part of the Siv3D Engine.
 //
@@ -63,7 +63,7 @@ namespace s3d
 			const float exp = 1.0f / (1.0f + x + 0.48f * x * x + 0.235f * x * x * x);
 			float change = from - to;
 
-			// ‘¬“x‚ð maxSpeed ‚É§ŒÀ
+			// é€Ÿåº¦ã‚’ maxSpeed ã«åˆ¶é™
 			const float originalTo = to;
 			if (maxSpeed)
 			{
@@ -77,7 +77,7 @@ namespace s3d
 
 			float result = to + (change + temp) * exp;
 
-			// s‚«‰ß‚¬‚ð–h‚®
+			// è¡ŒãéŽãŽã‚’é˜²ã
 			if (((originalTo - from) > 0.0f) == (result > originalTo))
 			{
 				result = originalTo;
@@ -94,7 +94,7 @@ namespace s3d
 			const double exp = 1.0 / (1.0 + x + 0.48 * x * x + 0.235 * x * x * x);
 			double change = from - to;
 
-			// ‘¬“x‚ð maxSpeed ‚É§ŒÀ
+			// é€Ÿåº¦ã‚’ maxSpeed ã«åˆ¶é™
 			const double originalTo = to;
 			if (maxSpeed)
 			{
@@ -108,7 +108,7 @@ namespace s3d
 
 			double result = to + (change + temp) * exp;
 
-			// s‚«‰ß‚¬‚ð–h‚®
+			// è¡ŒãéŽãŽã‚’é˜²ã
 			if (((originalTo - from) > 0.0) == (result > originalTo))
 			{
 				result = originalTo;
@@ -125,7 +125,7 @@ namespace s3d
 			const float exp = 1.0f / (1.0f + x + 0.48f * x * x + 0.235f * x * x * x);
 			Float2 change = from - to;
 
-			// ‘¬“x‚ð maxSpeed ‚É§ŒÀ
+			// é€Ÿåº¦ã‚’ maxSpeed ã«åˆ¶é™
 			const Float2 originalTo = to;
 			if (maxSpeed)
 			{
@@ -139,7 +139,7 @@ namespace s3d
 
 			Float2 result = to + (change + temp) * exp;
 
-			// s‚«‰ß‚¬‚ð–h‚®
+			// è¡ŒãéŽãŽã‚’é˜²ã
 			if ((originalTo - from).dot(result - originalTo) > 0.0f)
 			{
 				result = originalTo;
@@ -156,7 +156,7 @@ namespace s3d
 			const double exp = 1.0 / (1.0 + x + 0.48 * x * x + 0.235 * x * x * x);
 			Vec2 change = from - to;
 
-			// ‘¬“x‚ð maxSpeed ‚É§ŒÀ
+			// é€Ÿåº¦ã‚’ maxSpeed ã«åˆ¶é™
 			const Vec2 originalTo = to;
 			if (maxSpeed)
 			{
@@ -170,7 +170,7 @@ namespace s3d
 
 			Vec2 result = to + (change + temp) * exp;
 
-			// s‚«‰ß‚¬‚ð–h‚®
+			// è¡ŒãéŽãŽã‚’é˜²ã
 			if ((originalTo - from).dot(result - originalTo) > 0.0)
 			{
 				result = originalTo;
@@ -187,7 +187,7 @@ namespace s3d
 			const float exp = 1.0f / (1.0f + x + 0.48f * x * x + 0.235f * x * x * x);
 			Float3 change = from - to;
 
-			// ‘¬“x‚ð maxSpeed ‚É§ŒÀ
+			// é€Ÿåº¦ã‚’ maxSpeed ã«åˆ¶é™
 			const Float3 originalTo = to;
 			if (maxSpeed)
 			{
@@ -201,7 +201,7 @@ namespace s3d
 
 			Float3 result = to + (change + temp) * exp;
 
-			// s‚«‰ß‚¬‚ð–h‚®
+			// è¡ŒãéŽãŽã‚’é˜²ã
 			if ((originalTo - from).dot(result - originalTo) > 0.0f)
 			{
 				result = originalTo;
@@ -218,7 +218,7 @@ namespace s3d
 			const double exp = 1.0 / (1.0 + x + 0.48 * x * x + 0.235 * x * x * x);
 			Vec3 change = from - to;
 
-			// ‘¬“x‚ð maxSpeed ‚É§ŒÀ
+			// é€Ÿåº¦ã‚’ maxSpeed ã«åˆ¶é™
 			const Vec3 originalTo = to;
 			if (maxSpeed)
 			{
@@ -232,7 +232,7 @@ namespace s3d
 
 			Vec3 result = to + (change + temp) * exp;
 
-			// s‚«‰ß‚¬‚ð–h‚®
+			// è¡ŒãéŽãŽã‚’é˜²ã
 			if ((originalTo - from).dot(result - originalTo) > 0.0)
 			{
 				result = originalTo;
@@ -249,7 +249,7 @@ namespace s3d
 			const float exp = 1.0f / (1.0f + x + 0.48f * x * x + 0.235f * x * x * x);
 			Float4 change = from - to;
 
-			// ‘¬“x‚ð maxSpeed ‚É§ŒÀ
+			// é€Ÿåº¦ã‚’ maxSpeed ã«åˆ¶é™
 			const Float4 originalTo = to;
 			if (maxSpeed)
 			{
@@ -263,7 +263,7 @@ namespace s3d
 
 			Float4 result = to + (change + temp) * exp;
 
-			// s‚«‰ß‚¬‚ð–h‚®
+			// è¡ŒãéŽãŽã‚’é˜²ã
 			if ((originalTo - from).dot(result - originalTo) > 0.0f)
 			{
 				result = originalTo;
@@ -280,7 +280,7 @@ namespace s3d
 			const double exp = 1.0 / (1.0 + x + 0.48 * x * x + 0.235 * x * x * x);
 			Vec4 change = from - to;
 
-			// ‘¬“x‚ð maxSpeed ‚É§ŒÀ
+			// é€Ÿåº¦ã‚’ maxSpeed ã«åˆ¶é™
 			const Vec4 originalTo = to;
 			if (maxSpeed)
 			{
@@ -294,7 +294,7 @@ namespace s3d
 
 			Vec4 result = to + (change + temp) * exp;
 
-			// s‚«‰ß‚¬‚ð–h‚®
+			// è¡ŒãéŽãŽã‚’é˜²ã
 			if ((originalTo - from).dot(result - originalTo) > 0.0)
 			{
 				result = originalTo;
