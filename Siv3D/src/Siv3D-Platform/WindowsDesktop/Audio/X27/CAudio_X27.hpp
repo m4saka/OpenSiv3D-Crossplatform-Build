@@ -1,4 +1,4 @@
-﻿//-----------------------------------------------
+//-----------------------------------------------
 //
 //	This file is part of the Siv3D Engine.
 //
@@ -11,6 +11,7 @@
 
 # pragma once
 # include <atomic>
+# include <thread>
 # include <Siv3D/Windows.hpp>
 # include <XAudio2_7/XAudio2.h>
 # include <XAudio2_7/XAudio2fx.h>
