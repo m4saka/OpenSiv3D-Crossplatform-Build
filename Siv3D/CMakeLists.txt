@@ -912,6 +912,8 @@ else()
 	# Mac/Linux版
 	if(APPLE)
 		set(PLATFORM_FLAGS "-D__MACOSX_CORE__ -D_GLFW_COCOA")
+	elseif(MINGW)
+		set(PLATFORM_FLAGS "-DUNICODE -D_GLFW_X11")
 	else()
 		set(PLATFORM_FLAGS "-D_GLFW_X11")
 	endif()
