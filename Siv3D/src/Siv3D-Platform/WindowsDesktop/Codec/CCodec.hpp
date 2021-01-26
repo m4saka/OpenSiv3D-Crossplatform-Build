@@ -16,7 +16,12 @@
 # include <mfidl.h>
 # include <Mfreadwrite.h>
 # include <Codec/ICodec.hpp>
-
+#ifdef __mingw32__
+// in mingw, there are no decleation of MFCreateAudioRendererActivate in mfidl.h
+HRESULT MFCreateAudioRendererActivate(
+  IMFActivate **ppActivate
+);
+#endif // __mingw32__
 namespace s3d
 {
 	struct MF_Functions
