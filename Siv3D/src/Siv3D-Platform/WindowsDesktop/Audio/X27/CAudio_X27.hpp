@@ -1,4 +1,4 @@
-//-----------------------------------------------
+﻿//-----------------------------------------------
 //
 //	This file is part of the Siv3D Engine.
 //
@@ -13,9 +13,14 @@
 # include <atomic>
 # include <thread>
 # include <Siv3D/Windows.hpp>
+#ifdef __mingw32__
+# include <XAudio2.h>
+# include <XAudio2fx.h>
+#else
 # include <XAudio2_7/XAudio2.h>
 # include <XAudio2_7/XAudio2fx.h>
 # include <XAudio2_7/X3DAudio.h>
+#endif
 # include <Audio/IAudio.hpp>
 # include <AssetHandleManager/AssetHandleManager.hpp>
 # include "Audio_X27.hpp"
