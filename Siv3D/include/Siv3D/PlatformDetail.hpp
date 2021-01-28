@@ -156,23 +156,3 @@ namespace s3d::Platform
 # endif
 
 }
-
-//////////////////////////////////////////////////
-//
-// ConcurrentTask::is_done
-//
-//////////////////////////////////////////////////
-
-# if SIV3D_PLATFORM(WINDOWS)
-
-	# define SIV3D_CONCURRENT_TASK_IS_DONE base_type::_Is_ready()
-
-# elif SIV3D_PLATFORM(MACOS) || SIV3D_PLATFORM(LINUX)
-
-	# define SIV3D_CONCURRENT_TASK_IS_DONE (base_type::valid() && (base_type::wait_for(std::chrono::seconds(0)) == std::future_status::ready))
-
-# else
-
-# error Unimplemented
-
-# endif

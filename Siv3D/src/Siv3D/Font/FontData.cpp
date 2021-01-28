@@ -797,7 +797,7 @@ namespace s3d
 			}
 			else
 			{
-				const char32VH indexVH = codePoint | Horizontal;
+				[[maybe_unused]] const char32VH indexVH = codePoint | Horizontal;
 				const FT_UInt glyphIndexText = ::FT_Get_Char_Index(m_faceText.face, codePoint);
 				const FT_UInt glyphIndexEmoji = (glyphIndexText != 0) ? 0 : m_faceEmoji ? ::FT_Get_Char_Index(m_faceEmoji.face, codePoint) : 0;
 				const FT_Face face = (glyphIndexText != 0 || (glyphIndexEmoji == 0)) ? m_faceText.face : m_faceEmoji.face;

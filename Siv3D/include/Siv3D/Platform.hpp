@@ -1,4 +1,4 @@
-﻿//-----------------------------------------------
+//-----------------------------------------------
 //
 //	This file is part of the Siv3D Engine.
 //
@@ -133,11 +133,11 @@ namespace s3d
 //
 //////////////////////////////////////////////////
 
-# if SIV3D_PLATFORM(WINDOWS)
+# if defined _MSC_VER
 
 	# define SIV3D_VECTOR_CALL __vectorcall
 
-# elif SIV3D_PLATFORM(MACOS) || SIV3D_PLATFORM(LINUX)
+# elif SIV3D_PLATFORM(MACOS) || SIV3D_PLATFORM(LINUX) || defined(__MINGW32__)
 
 	# define SIV3D_VECTOR_CALL
 
@@ -155,7 +155,7 @@ namespace s3d
 //
 //////////////////////////////////////////////////
 
-# if SIV3D_PLATFORM(WINDOWS)
+# if defined(_MSC_VER) && !defined(__clang__)
 
     # define SIV3D_DISABLE_MSVC_WARNINGS_PUSH(warnings)	\
 			 __pragma(warning(push))					\
@@ -180,7 +180,7 @@ namespace s3d
 //
 //////////////////////////////////////////////////
 
-# if SIV3D_PLATFORM(WINDOWS) && (_MSC_FULL_VER < 192428314)
+# if defined(_MSC_FULL_VER) && (_MSC_FULL_VER < 192428314) && !defined(__clang__)
 
 	# error Visual Studio 2019 16.4 or later is required to build this project.
 

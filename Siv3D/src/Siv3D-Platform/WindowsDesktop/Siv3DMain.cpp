@@ -1,4 +1,4 @@
-﻿//-----------------------------------------------
+//-----------------------------------------------
 //
 //	This file is part of the Siv3D Engine.
 //
@@ -181,15 +181,12 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	LOG_TRACE(U"MainThread");
 	Logger.writeRawHTML_UTF8("<hr width=\"99%\">");
 	{
+		using namespace std::chrono_literals;
 		const std::future<void> f = std::async(std::launch::async, MainThread);
 
-		while (!f._Is_ready())
+		while (f.wait_for(1ms) != std::future_status::ready)
 		{
 			PumpMessages();
-
-			::timeBeginPeriod(1);
-			::Sleep(1);
-			::timeEndPeriod(1);
 		}
 	}
 	Logger.writeRawHTML_UTF8("<hr width=\"99%\">");
