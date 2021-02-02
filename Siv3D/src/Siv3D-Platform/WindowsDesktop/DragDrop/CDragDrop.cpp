@@ -55,6 +55,7 @@ namespace s3d
 			explicit DropTarget(HWND hWnd)
 				: IDropTarget()
 				, m_hWnd(hWnd) {}
+			virtual ~DropTarget() = default;
 
 			HRESULT __stdcall QueryInterface(const IID& iid, void** ppv) override
 			{
@@ -265,7 +266,7 @@ namespace s3d
 			{
 
 			}
-
+			virtual ~DropSource() = default;
 			ULONG __stdcall AddRef() override
 			{
 				return ++m_refCount;
@@ -362,7 +363,7 @@ namespace s3d
 				}
 			}
 
-			~CEnumFormatEtc()
+			virtual ~CEnumFormatEtc() noexcept
 			{
 				for (auto& formatEtc : m_formatEtcs)
 				{
@@ -531,6 +532,7 @@ namespace s3d
 					m_stgMediums[i] = stgmed[i];
 				}
 			}
+			virtual ~DataObject() = default;
 
 			ULONG __stdcall AddRef() override
 			{
