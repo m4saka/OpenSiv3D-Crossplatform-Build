@@ -84,9 +84,9 @@ namespace s3d
 		if (!gif->lastImage) // first frame
 		{
 			image.resize(rawImageSize);
-			for (size_t yy = 0; yy < rawImageSize.y; ++yy)
+			for (Size::value_type yy = 0; yy < rawImageSize.y; ++yy)
 			{
-				for (size_t xx = 0; xx < rawImageSize.x; ++xx)
+				for (Size::value_type xx = 0; xx < rawImageSize.x; ++xx)
 				{
 					image[yy][xx] = Color::FromRGBA32(pict[(uint32_t)whdr->xdim * yy + xx + ddst]);
 				}
@@ -95,9 +95,9 @@ namespace s3d
 		else
 		{
 			image = gif->lastImage;
-			for (size_t yy = 0; yy < rawImageSize.y; ++yy)
+			for (Size::value_type yy = 0; yy < rawImageSize.y; ++yy)
 			{
-				for (size_t xx = 0; xx < rawImageSize.x; ++xx)
+				for (Size::value_type xx = 0; xx < rawImageSize.x; ++xx)
 				{
 					image[yy + offset.y][xx + offset.x] = Color::FromRGBA32(pict[(uint32_t)whdr->xdim * yy + xx + ddst]);
 				}
