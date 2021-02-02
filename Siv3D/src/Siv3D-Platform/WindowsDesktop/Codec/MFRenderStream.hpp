@@ -1,4 +1,4 @@
-﻿//-----------------------------------------------
+//-----------------------------------------------
 //
 //	This file is part of the Siv3D Engine.
 //
@@ -397,10 +397,8 @@ namespace s3d
 			return E_NOTIMPL;
 		}
 
-		STDMETHODIMP Seek(MFBYTESTREAM_SEEK_ORIGIN SeekOrigin, LONGLONG llSeekOffset, DWORD dwSeekFlags, QWORD *pqwCurrentPosition)
+		STDMETHODIMP Seek(MFBYTESTREAM_SEEK_ORIGIN SeekOrigin, LONGLONG llSeekOffset, [[maybe_unused]] DWORD dwSeekFlags, QWORD *pqwCurrentPosition)
 		{
-			dwSeekFlags;
-
 			int64_t llNewPos;
 
 			CLockStream lock(this);
