@@ -210,34 +210,6 @@ namespace s3d
 
 		std::shared_ptr<detail::TOMLValueDetail> m_detail = nullptr;
 
-		template <class Type, std::enable_if_t<std::is_integral_v<Type> && !std::is_same_v<bool, std::decay_t<Type>>>* = nullptr>
-		Optional<Type> getOpt_() const
-		{
-			if (auto&& tmp = getOpt<int64>())
-			{
-				return static_cast<Type>(tmp.value());
-			}
-			
-			return none;
-		}
-
-		template <class Type, std::enable_if_t<std::is_floating_point_v<Type>>* = nullptr>
-		Optional<Type> getOpt_() const
-		{
-			if (auto&& tmp = getOpt<double>())
-			{
-				return static_cast<Type>(tmp.value());
-			}
-
-			return none;
-		}
-
-		template <class Type, std::enable_if_t<!std::is_arithmetic_v<Type>>* = nullptr>
-		Optional<Type> getOpt_() const
-		{
-			return ParseOpt<Type>(getString());
-		}
-
 		Optional<String> getOptString() const;
 
 		Optional<int64> getOptInt64() const;
@@ -286,30 +258,38 @@ namespace s3d
 		template <class Type>
 		[[nodiscard]] Optional<Type> getOpt() const
 		{
-			return getOpt_<Type>();
+			const auto cast = [](auto&& opt) {
+				return opt? Optional<Type>{ static_cast<Type>(opt.value()) } : none;
+			};
+			if constexpr (std::is_same_v<bool, Type>)
+			{
+				return getOptBool();
+			}
+			else if constexpr (std::is_same_v<Date, Type>)
+			{
+				return getOptDate();
+			}
+			else if constexpr (std::is_same_v<DateTime, Type>)
+			{
+				return getOptDateTime();
+			}
+			else if constexpr (std::is_same_v<String, Type>)
+			{
+				return getOptString();
+			}
+			else if constexpr (std::is_integral_v<Type>)
+			{
+				return cast(getOptInt64());
+			}
+			else if constexpr (std::is_floating_point_v<Type>)
+			{
+				return cast(getOptDouble());
+			}
+			else
+			{
+				return ParseOpt<Type>(getString());
+			}
 		}
-
-# if SIV3D_PLATFORM(WINDOWS) || SIV3D_PLATFORM(MACOS)
-
-		template <>
-		[[nodiscard]] inline Optional<String> getOpt<String>() const;
-
-		template <>
-		[[nodiscard]] inline Optional<int64> getOpt<int64>() const;
-
-		template <>
-		[[nodiscard]] inline Optional<double> getOpt<double>() const;
-
-		template <>
-		[[nodiscard]] inline Optional<bool> getOpt<bool>() const;
-
-		template <>
-		[[nodiscard]] inline Optional<Date> getOpt<Date>() const;
-
-		template <>
-		[[nodiscard]] inline Optional<DateTime> getOpt<DateTime>() const;
-
-# endif
 
 		[[nodiscard]] bool isEmpty() const;
 
@@ -391,42 +371,6 @@ namespace s3d
 
 		[[nodiscard]] explicit operator bool() const noexcept;
 	};
-
-	template <>
-	[[nodiscard]] inline Optional<String> TOMLValue::getOpt<String>() const
-	{
-		return getOptString();
-	}
-
-	template <>
-	[[nodiscard]] inline Optional<int64> TOMLValue::getOpt<int64>() const
-	{
-		return getOptInt64();
-	}
-
-	template <>
-	[[nodiscard]] inline Optional<double> TOMLValue::getOpt<double>() const
-	{
-		return getOptDouble();
-	}
-
-	template <>
-	[[nodiscard]] inline Optional<bool> TOMLValue::getOpt<bool>() const
-	{
-		return getOptBool();
-	}
-
-	template <>
-	[[nodiscard]] inline Optional<Date> TOMLValue::getOpt<Date>() const
-	{
-		return getOptDate();
-	}
-
-	template <>
-	[[nodiscard]] inline Optional<DateTime> TOMLValue::getOpt<DateTime>() const
-	{
-		return getOptDateTime();
-	}
 
 	void Formatter(FormatData& formatData, const TOMLValue& value);
 
