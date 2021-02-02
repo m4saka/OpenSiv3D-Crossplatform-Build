@@ -35,7 +35,7 @@ namespace s3d
 				static_cast<WORD>(WAVE_FORMAT_IEEE_FLOAT),
 				2,
 				wave.samplingRate(),
-				wave.samplingRate() * sizeof(WaveSample),
+				static_cast<DWORD>(wave.samplingRate() * sizeof(WaveSample)),
 				static_cast<WORD>(sizeof(WaveSample)),
 				static_cast<WORD>(32),
 				static_cast<WORD>(0)
@@ -343,7 +343,7 @@ namespace s3d
 				static_cast<WORD>(WAVE_FORMAT_IEEE_FLOAT),
 				static_cast<WORD>(m_is3D ? 1 : 2),
 				m_pWave->samplingRate(),
-				m_pWave->samplingRate() * sizeof(WaveSample),
+				static_cast<DWORD>(m_pWave->samplingRate() * sizeof(WaveSample)),
 				static_cast<WORD>(sizeof(WaveSample)),
 				static_cast<WORD>(32),
 				static_cast<WORD>(0)
