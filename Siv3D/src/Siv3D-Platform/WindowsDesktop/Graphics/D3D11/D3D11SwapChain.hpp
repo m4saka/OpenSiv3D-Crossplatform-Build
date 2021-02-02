@@ -25,7 +25,9 @@ namespace s3d
 	private:
 
 		HWND m_hWnd = nullptr;
+#if defined(WINVER) && WINVER >= 0x0605
 		decltype(GetDpiForWindow)* p_GetDpiForWindow = nullptr;
+#endif
 		ID3D11Device* m_device = nullptr;
 		ID3D11DeviceContext* m_context = nullptr;
 		bool m_useFlipModel = false;

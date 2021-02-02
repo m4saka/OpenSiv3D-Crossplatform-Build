@@ -55,12 +55,12 @@ namespace s3d
 	{
 		LOG_TRACE(U"D3D11SwapChain::D3D11SwapChain()");
 		LOG_TRACE(U"Use flip model = {}"_fmt(m_useFlipModel));
-
+#if defined(WINVER) && WINVER >= 0x0605
 		if (HMODULE user32 = DLL::LoadSystemLibrary(L"User32.dll"))
 		{
 			p_GetDpiForWindow = DLL::GetFunctionNoThrow(user32, "GetDpiForWindow");
 		}
-
+#endif
 		m_desc.Width		= clientSize.x;
 		m_desc.Height		= clientSize.y;
 		m_desc.Format		= DXGI_FORMAT_R8G8B8A8_UNORM;
@@ -272,9 +272,11 @@ namespace s3d
 		DEVMODE devMode = {};
 		devMode.dmSize = sizeof(DEVMODE);
 		::EnumDisplaySettingsW(desc.DeviceName, ENUM_CURRENT_SETTINGS, &devMode);
-
+#if defined(WINVER) && WINVER >= 0x0605
 		const double scaling = p_GetDpiForWindow ? (p_GetDpiForWindow(m_hWnd) / 96.0) : 1.0;
-
+#else
+		const double scaling = 1.0;
+#endif
 		return{ scaling, devMode.dmDisplayFrequency };
 	}
 }
