@@ -52,6 +52,7 @@ namespace s3d
 			, ReadBufferSize(InReadBufferSize)
 			, RefCount(1)
 		{ }
+		virtual ~FWmfMediaReadState() = default;
 	public:
 		/**
 		* Sets the number of bytes read.
