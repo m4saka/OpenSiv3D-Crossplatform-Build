@@ -23,6 +23,20 @@
 
 namespace s3d
 {
+	namespace detail::angelscript {
+		template<typename F>
+		AngelScript::asSFuncPtr ASMethodImpl(F f)
+		{
+			// 3: Mark this as a class method
+			AngelScript::asSFuncPtr p(3);
+			p.CopyMethodPtr(&f, sizeof(f));
+			return p;
+		}
+	}
+#ifdef asMETHOD
+# undef asMETHOD
+# define asMETHOD(c, m) s3d::detail::angelscript::ASMethodImpl(&c::m)
+#endif
 	struct ScriptModuleData
 	{
 		AngelScript::asIScriptModule* module = nullptr;
