@@ -140,7 +140,14 @@ namespace s3d
 		{
 			return;
 		}
-
+#ifdef __MINGW32__
+		const auto handle = AddVectoredExceptionHandler(0, [](struct _EXCEPTION_POINTERS *ExceptionInfo) -> LONG {
+			ShowException(ExceptionInfo->ExceptionRecord->ExceptionCode, ExceptionInfo);
+			return -1;
+		});
+		TryMain();
+		ScopeGuard onExit = [handle](){ RemoveVectoredExceptionHandler(handle); };
+#else
 		__try
 		{
 			TryMain();
@@ -149,7 +156,7 @@ namespace s3d
 		{
 
 		}
-
+#endif
 		Siv3DEngine::Get<ISiv3DScript>()->shutdown();
 	}
 }
