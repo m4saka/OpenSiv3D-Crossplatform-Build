@@ -1,4 +1,4 @@
-﻿//-----------------------------------------------
+//-----------------------------------------------
 //
 //	This file is part of the Siv3D Engine.
 //
@@ -41,8 +41,8 @@ namespace s3d
 		{
 			return;
 		}
-
-		p_XAudio2Create = reinterpret_cast<decltype(XAudio2Create)*>(::GetProcAddress(m_xaudio28, "XAudio2Create"));
+		const auto tmp_XAudio2Create = ::GetProcAddress(m_xaudio28, "XAudio2Create");
+		std::memcpy(&p_XAudio2Create, &tmp_XAudio2Create, sizeof(decltype(XAudio2Create)*));
 
 		if (!p_XAudio2Create)
 		{
