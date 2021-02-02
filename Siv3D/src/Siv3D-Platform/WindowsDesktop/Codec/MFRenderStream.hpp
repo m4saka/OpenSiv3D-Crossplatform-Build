@@ -1,4 +1,4 @@
-//-----------------------------------------------
+﻿//-----------------------------------------------
 //
 //	This file is part of the Siv3D Engine.
 //
@@ -23,8 +23,9 @@
 namespace s3d
 {
 	// 参考
-	//	http://d.hatena.ne.jp/shiku_otomiya/20130913/p1
-	//	http://d.hatena.ne.jp/shiku_otomiya/20130914/p1
+	//	https://www.timbreofprogram.info/blog/archives/458
+	//	https://www.timbreofprogram.info/blog/archives/460
+	//	https://www.timbreofprogram.info/blog/archives/451
 	//	https://github.com/easyfungames/u4.4.4/tree/09e4225291f64f3543bde9e1a049ff92d1825297/Engine/Plugins/Media/WmfMedia/Source/WmfMedia/Private/Wmf
 
 	/**
