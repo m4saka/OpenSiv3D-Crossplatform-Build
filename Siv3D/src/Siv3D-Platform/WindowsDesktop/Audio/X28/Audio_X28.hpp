@@ -13,7 +13,23 @@
 # include <Siv3D/Windows.hpp>
 # include <XAudio2.h>
 # include <XAudio2fx.h>
-# include <X3DAudio.h>
+#ifdef __MINGW32__
+# ifndef __out
+# 	define __out
+# endif
+# ifndef __in
+# 	define __in
+# endif
+# ifndef __inout
+# 	define __inout
+# endif
+#endif
+# include <XAudio2_7/X3DAudio.h>
+#ifdef __MINGW32__
+# undef __out
+# undef __in
+# undef __inout
+#endif
 # include <Siv3D/Wave.hpp>
 # include <Audio/AudioControlManager.hpp>
 # include "AudioDevice_X28 .hpp"

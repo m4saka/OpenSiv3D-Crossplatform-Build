@@ -35,6 +35,17 @@ namespace s3d
 
 	CAudio_X27::CAudio_X27()
 	{
+#ifdef __MINGW32__
+		// XAudio2Create はXAudio27向けではない
+		if (FAILED(CoCreateInstance(CLSID_XAudio27, nullptr, CLSCTX_INPROC_SERVER, IID_IXAudio27, reinterpret_cast<void**>(&m_device.xAudio2))))
+		{
+			return;
+		}
+		if (FAILED(m_device.xAudio2->Initialize(0, XAUDIO2_DEFAULT_PROCESSOR)))
+		{
+			return;
+		}
+#else
 		if (FAILED(::XAudio2Create(&m_device.xAudio2, 0)))
 		{
 			//LOG_FAIL(L"XAudio2 の初期化に失敗しました。最新の DirectX ランタイムをインストールすることで解決する場合があります。");
@@ -45,7 +56,7 @@ namespace s3d
 
 			return;
 		}
-
+#endif
 		if (FAILED(m_device.xAudio2->CreateMasteringVoice(&m_device.masteringVoice)))
 		{
 			//LOG_FAIL(L"XAudio2: マスターボイスの作成に失敗しました。サウンドデバイスが有効か確認してください。");
@@ -78,7 +89,6 @@ namespace s3d
 	bool CAudio_X27::init()
 	{
 		LOG_TRACE(U"CAudio_X27::init()");
-
 		if (FAILED(m_device.xAudio2->GetDeviceDetails(0, &m_device.deviceDetails)))
 		{
 			//LOG_FAIL(L"XAudio2: オーディオデバイス情報の取得に失敗しました。");

@@ -1,4 +1,4 @@
-﻿//-----------------------------------------------
+//-----------------------------------------------
 //
 //	This file is part of the Siv3D Engine.
 //
@@ -11,7 +11,11 @@
 
 # pragma once
 # include <Siv3D/Windows.hpp>
+#ifdef __MINGW32__
+# include "MinGW/IXAudio27.hpp"
+#else
 # include <XAudio2_7/XAudio2.h>
+#endif
 # include <Siv3D/Audio.hpp>
 # include <Siv3D/Optional.hpp>
 

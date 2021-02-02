@@ -13,13 +13,27 @@
 # include <atomic>
 # include <thread>
 # include <Siv3D/Windows.hpp>
-#ifdef __mingw32__
+#ifdef __MINGW32__
 # include <XAudio2.h>
 # include <XAudio2fx.h>
+# ifndef __out
+# 	define __out
+# endif
+# ifndef __in
+# 	define __in
+# endif
+# ifndef __inout
+# 	define __inout
+# endif
 #else
 # include <XAudio2_7/XAudio2.h>
 # include <XAudio2_7/XAudio2fx.h>
+#endif
 # include <XAudio2_7/X3DAudio.h>
+#ifdef __MINGW32__
+# undef __out
+# undef __in
+# undef __inout
 #endif
 # include <Audio/IAudio.hpp>
 # include <AssetHandleManager/AssetHandleManager.hpp>
