@@ -319,8 +319,7 @@ namespace s3d
 
 			const std::wstring wpath = Unicode::ToWString(path);
 			wchar_t result[1024];
-			wchar_t* pFilePart = nullptr;
-			const DWORD length = ::GetFullPathNameW(wpath.c_str(), _countof(result), result, &pFilePart);
+			const DWORD length = ::GetFullPathNameW(wpath.c_str(), _countof(result), result, nullptr);
 
 			if (length == 0)
 			{
@@ -329,18 +328,16 @@ namespace s3d
 			else if (length > std::size(result))
 			{
 				std::wstring result2(length - 1, L'\0');
-				const DWORD length2 = ::GetFullPathNameW(wpath.c_str(), length, result2.data(), &pFilePart);
+				const DWORD length2 = ::GetFullPathNameW(wpath.c_str(), length, result2.data(), nullptr);
 
 				if ((length2 == 0) || (length2 > length))
 				{
 					return Platform::NativeFilePath();
 				}
 
-				const bool isDirectory = (pFilePart == nullptr);
 				return result2;
 			}
 
-			const bool isDirectory = (pFilePart == nullptr);
 			return std::wstring(result, length);
 		}
 
