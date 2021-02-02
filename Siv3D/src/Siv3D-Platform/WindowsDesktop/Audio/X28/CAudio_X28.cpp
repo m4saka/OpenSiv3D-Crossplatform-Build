@@ -1,4 +1,4 @@
-//-----------------------------------------------
+﻿//-----------------------------------------------
 //
 //	This file is part of the Siv3D Engine.
 //
@@ -86,11 +86,10 @@ namespace s3d
 	bool CAudio_X28::init()
 	{
 		LOG_TRACE(U"CAudio_X28::init()");
-
-		if (FAILED(m_device.masteringVoice->GetChannelMask(&m_device.channelMask)))
-		{
-			return false;
-		}
+		// Windows SDK's header says GetChannelMask returns HRESULT. However, microsoft's docucmentaion says this method doesn't return a value.
+		// https://docs.microsoft.com/en-us/windows/win32/api/xaudio2/nf-xaudio2-ixaudio2masteringvoice-getchannelmask
+		// So, we must not check return value.
+		m_device.masteringVoice->GetChannelMask(&m_device.channelMask);
 
 		auto nullAudio = std::make_unique<Audio_X28>(
 			Wave(SecondsF(0.5), Arg::generator = [](double t) {
