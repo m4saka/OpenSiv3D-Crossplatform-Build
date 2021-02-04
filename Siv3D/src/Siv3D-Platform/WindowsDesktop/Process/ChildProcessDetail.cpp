@@ -11,6 +11,12 @@
 
 # include "ChildProcessDetail.hpp"
 
+#include <boost/version.hpp>
+#if defined(__MINGW32__) && !defined(__kernel_entry) && (BOOST_VERSION / 100000) == 1 && (BOOST_VERSION / 100 % 1000) <= 75
+// see https://github.com/boostorg/process/issues/96
+// This problem was already fixed and merged so that on boost 1.76 or later, this workaround is not required.
+# define __kernel_entry
+#endif
 SIV3D_DISABLE_MSVC_WARNINGS_PUSH(4189)
 SIV3D_DISABLE_MSVC_WARNINGS_PUSH(4267)
 # include <boost/process/io.hpp>
