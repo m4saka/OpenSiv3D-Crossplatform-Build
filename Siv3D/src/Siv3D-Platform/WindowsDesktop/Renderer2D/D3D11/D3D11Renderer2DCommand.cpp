@@ -155,7 +155,7 @@ namespace s3d
 			m_rasterizerStates.push_back(m_currentRasterizerState);
 		}
 
-		for (int32 i = 0; i < SamplerState::MaxSamplerCount; ++i)
+		for (uint32 i = 0; i < SamplerState::MaxSamplerCount; ++i)
 		{
 			const auto command = ToEnum<RendererCommand>(FromEnum(RendererCommand::PSSamplerState0) + i);
 
@@ -202,7 +202,7 @@ namespace s3d
 			m_viewports.push_back(m_currentViewport);
 		}
 
-		for (int32 i = 0; i < SamplerState::MaxSamplerCount; ++i)
+		for (uint32 i = 0; i < SamplerState::MaxSamplerCount; ++i)
 		{
 			const auto command = ToEnum<RendererCommand>(FromEnum(RendererCommand::PSTexture0) + i);
 
