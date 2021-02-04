@@ -34,6 +34,12 @@
 /*/
 #	define LOG_COMMAND(...) ((void)0)
 //*/
+#ifndef D3D11_MIN_DEPTH
+# define D3D11_MIN_DEPTH 0.0f
+#endif
+#ifndef D3D11_MAX_DEPTH
+# define D3D11_MAX_DEPTH 1.0f
+#endif
 
 namespace s3d
 {
@@ -459,10 +465,11 @@ namespace s3d
 		const Float2 sceneSize = pGraphics->getSceneSize();
 		auto[s, viewRect] = getLetterboxingTransform();
 		
-		const CD3D11_VIEWPORT viewport(
+		const D3D11_VIEWPORT viewport {
 			viewRect.left, viewRect.top,
-			viewRect.right,
-			viewRect.bottom);
+			viewRect.right, viewRect.bottom,
+			D3D11_MIN_DEPTH, D3D11_MAX_DEPTH
+		};
 		m_context->RSSetViewports(1, &viewport);
 
 		if (multisample)
