@@ -12,6 +12,7 @@
 # include <algorithm>
 # include <Siv3D/Array.hpp>
 # include <Siv3D/Logger.hpp>
+# include <Siv3D/DLL.hpp>
 # include "WindowsIME.h"
 # include "CTextInput.hpp"
 
@@ -402,12 +403,9 @@ IME_Init(SDL_VideoData *videodata, HWND hwnd)
 	}
 	//videodata->ImmLockIMC = (LPINPUTCONTEXT2(WINAPI *)(HIMC))SDL_LoadFunction(videodata->ime_himm32, "ImmLockIMC");
 	
-	videodata->ImmUnlockIMC = 
-		(BOOL(WINAPI *)(HIMC))::GetProcAddress(videodata->ime_himm32, "ImmUnlockIMC");
-	videodata->ImmLockIMCC =
-		(LPVOID(WINAPI *)(HIMCC))::GetProcAddress(videodata->ime_himm32, "ImmLockIMCC");
-	videodata->ImmUnlockIMCC =
-		(BOOL(WINAPI *)(HIMCC))::GetProcAddress(videodata->ime_himm32, "ImmUnlockIMCC");
+	videodata->ImmUnlockIMC = s3d::DLL::GetFunctionNoThrow(videodata->ime_himm32, "ImmUnlockIMC");
+	videodata->ImmLockIMCC = s3d::DLL::GetFunctionNoThrow(videodata->ime_himm32, "ImmLockIMCC");
+	videodata->ImmUnlockIMCC = s3d::DLL::GetFunctionNoThrow(videodata->ime_himm32, "ImmUnlockIMCC");
 
 	IME_SetWindow(videodata, hwnd);
 	videodata->ime_himc = ImmGetContext(hwnd);
@@ -713,10 +711,8 @@ IME_SetupAPI(SDL_VideoData *videodata)
 	if (!hime)
 		return;
 
-	videodata->GetReadingString = (UINT(WINAPI *)(HIMC, UINT, LPWSTR, PINT, BOOL*, PUINT))
-		::GetProcAddress(hime, "GetReadingString");
-	videodata->ShowReadingWindow = (BOOL(WINAPI *)(HIMC, BOOL))
-		::GetProcAddress(hime, "ShowReadingWindow");
+	videodata->GetReadingString = s3d::DLL::GetFunctionNoThrow(hime, "GetReadingString");
+	videodata->ShowReadingWindow = s3d::DLL::GetFunctionNoThrow(hime, "ShowReadingWindow");
 
 	if (videodata->ShowReadingWindow) {
 		HIMC himc = ImmGetContext(videodata->ime_hwnd_current);

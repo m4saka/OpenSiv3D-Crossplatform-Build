@@ -13,6 +13,7 @@
 # include <Siv3DEngine.hpp>
 # include <Siv3D/MathConstants.hpp>
 # include <Siv3D/EngineLog.hpp>
+# include <Siv3D/DLL.hpp>
 # include "CAudio_X28.hpp"
 
 namespace s3d
@@ -41,8 +42,7 @@ namespace s3d
 		{
 			return;
 		}
-		const auto tmp_XAudio2Create = ::GetProcAddress(m_xaudio28, "XAudio2Create");
-		std::memcpy(&p_XAudio2Create, &tmp_XAudio2Create, sizeof(decltype(XAudio2Create)*));
+		p_XAudio2Create = DLL::GetFunctionNoThrow(m_xaudio28, "XAudio2Create");
 
 		if (!p_XAudio2Create)
 		{
