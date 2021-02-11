@@ -10,6 +10,8 @@
 //-----------------------------------------------
 
 # pragma once
+// mingw doen't support ToastNotification API
+#ifndef __MINGW32__
 # include <mutex>
 # include <Siv3D/ToastNotification.hpp>
 # include <Siv3D/HashTable.hpp>
@@ -67,3 +69,4 @@ namespace s3d
 		void onStateUpdate(size_t index, ToastNotificationState state, const Optional<int32>& option) override;
 	};
 }
+#endif

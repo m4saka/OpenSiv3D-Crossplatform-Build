@@ -697,6 +697,11 @@ if(WIN32)
 		"src/Siv3D-Platform/WindowsDesktop/Window/WindowProc.cpp"
 		"src/Siv3D-Platform/WindowsDesktop/WritableMemoryMapping/WritableMemoryMappingDetail.cpp"
 		"src/Siv3D-Platform/WindowsDesktop/XInput/CXInput.cpp")
+	if(MINGW)
+		list(REMOVE_ITEM SOURCE_FILES_PLATFORM
+			"src/Siv3D-Platform/WindowsDesktop/ToastNotification/CToastNotification.cpp"
+			"src/Siv3D-Platform/WindowsDesktop/ToastNotification/ToastNotificationFactory.cpp")
+	endif()
 elseif(APPLE)
 	set(SOURCE_FILES_PLATFORM
 		"src/Siv3D-Platform/macOS/Siv3DMain.cpp"
