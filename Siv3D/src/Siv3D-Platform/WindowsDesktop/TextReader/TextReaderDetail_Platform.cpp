@@ -14,6 +14,7 @@
 # include <Siv3D/ByteArray.hpp>
 # include <Siv3D/EngineLog.hpp>
 # include <TextReader/TextReaderDetail.hpp>
+# include <filesystem>
 
 namespace s3d
 {
@@ -85,7 +86,7 @@ namespace s3d
 		{
 			tmpIReader.reset();
 
-			m_ifs.open(Unicode::ToWString(path));
+			m_ifs.open(std::filesystem::path{path.begin(), path.end()});
 
 			m_opened = m_ifs.is_open();
 		}
@@ -138,7 +139,7 @@ namespace s3d
 		{
 			m_temporaryFile = detail::CreateTemporaryCopy(*reader);
 
-			m_ifs.open(m_temporaryFile->toWstr());
+			m_ifs.open(std::filesystem::path{m_temporaryFile->begin(), m_temporaryFile->end()});
 
 			m_opened = m_ifs.is_open();
 		}
