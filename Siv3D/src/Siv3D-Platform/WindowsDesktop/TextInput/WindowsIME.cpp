@@ -888,7 +888,7 @@ IME_AddCandidate(SDL_VideoData *videodata, UINT i, LPCWSTR candidate)
 
 	LPWSTR dst = videodata->ime_candidates[i];
 
-	while (*candidate && (_countof(videodata->ime_candidates[i]) > (dst - videodata->ime_candidates[i])))
+	while (*candidate && std::size(videodata->ime_candidates[i]) > size_t(dst - videodata->ime_candidates[i]))
 		*dst++ = *candidate++;
 
 	*dst = (WCHAR)'\0';
@@ -938,7 +938,7 @@ IME_GetCandidateList(HIMC himc, SDL_VideoData *videodata)
 					}
 				}
 				::memset(&videodata->ime_candidates, 0, sizeof(videodata->ime_candidates));
-				for (i = page_start, j = 0; (DWORD)i < cand_list->dwCount && j < (int)videodata->ime_candpgsize; i++, j++) {
+				for (i = page_start, j = 0; (DWORD)i < cand_list->dwCount && j < videodata->ime_candpgsize; i++, j++) {
 					LPCWSTR candidate = (LPCWSTR)((DWORD_PTR)cand_list + cand_list->dwOffset[i]);
 					IME_AddCandidate(videodata, j, candidate);
 				}
