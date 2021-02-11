@@ -63,35 +63,6 @@ namespace s3d
 				&& SUCCEEDED(pEnum->GetCount(&count)) && count != 0;
 		}
 
-		static bool IsAllAscii(const StringView text)
-		{
-			for (const auto& ch : text)
-			{
-				if (ch > 127)
-				{
-					return false;
-				}
-			}
-
-			return true;
-		}
-
-		static bool IsNumber(const StringView text)
-		{
-			for (const auto& ch : text)
-			{
-				if (!InRange(ch, U'0', U'9')
-					&& (ch != U'-')
-					&& (ch != U'.')
-					&& (ch != U','))
-				{
-					return false;
-				}
-			}
-
-			return true;
-		}
-
 		inline constexpr uint16 ConvertVolume(const double volume)
 		{
 			return static_cast<uint16>(Clamp(volume * 100, 0.0, 100.0));
