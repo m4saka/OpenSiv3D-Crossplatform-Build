@@ -204,7 +204,6 @@ namespace s3d
 	{
 		const double targetRefreshRateHz = m_targetFrameRateHz.value();
 		const double targetRefreshPeriodMillisec = (1000.0 / targetRefreshRateHz);
-		const double displayRefreshPeriodMillisec = detail::GetDisplayRefreshPeriodMillisec();
 
 		LARGE_INTEGER counter;
 		::QueryPerformanceCounter(&counter);
