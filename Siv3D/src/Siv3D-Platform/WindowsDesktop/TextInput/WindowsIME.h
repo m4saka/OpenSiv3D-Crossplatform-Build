@@ -11,7 +11,11 @@
 
 # pragma once
 # include <Siv3D/Windows.hpp>
+#ifdef __MINGW32__
+# include "MinGW/msctf.h"
+#else
 # include <msctf.h>
+#endif
 
 /*
 	Simple DirectMedia Layer

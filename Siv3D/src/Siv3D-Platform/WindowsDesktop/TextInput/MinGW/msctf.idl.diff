@@ -1,0 +1,106 @@
+--- /mingw64/x86_64-w64-mingw32/include/msctf.idl	2020-12-29 07:50:16.000000000 +0900
++++ msctf.idl	2021-02-11 10:48:08.572182600 +0900
+@@ -15,7 +15,7 @@
+  * License along with this library; if not, write to the Free Software
+  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+  */
+-
++cpp_quote("#include <winnt.h>")
+ #ifndef DO_NO_IMPORTS
+ import "oaidl.idl";
+ import "comcat.idl";
+@@ -68,6 +68,23 @@ typedef [uuid(7213778c-7bb0-4270-b050-61
+ typedef [uuid(de403c21-89fd-4f85-8b87-64584d063fbc)] DWORD TfClientId;
+ typedef [uuid(88a9c478-f3ec-4763-8345-cd9250443f8d)] DWORD TfGuidAtom;
+ 
++cpp_quote("#define TF_TMAE_NOACTIVATETIP              0x00000001")
++cpp_quote("#define TF_TMAE_SECUREMODE                 0x00000002")
++cpp_quote("#define TF_TMAE_UIELEMENTENABLEDONLY       0x00000004")
++cpp_quote("#define TF_TMAE_COMLESS                    0x00000008")
++cpp_quote("#define TF_TMAE_WOW16                      0x00000010")
++cpp_quote("#define TF_TMAE_NOACTIVATEKEYBOARDLAYOUT   0x00000020")
++cpp_quote("#define TF_TMAE_CONSOLE                    0x00000040")
++
++cpp_quote("#define TF_TMF_NOACTIVATETIP          TF_TMAE_NOACTIVATETIP")
++cpp_quote("#define TF_TMF_SECUREMODE             TF_TMAE_SECUREMODE")
++cpp_quote("#define TF_TMF_UIELEMENTENABLEDONLY   TF_TMAE_UIELEMENTENABLEDONLY")
++cpp_quote("#define TF_TMF_COMLESS                TF_TMAE_COMLESS")
++cpp_quote("#define TF_TMF_WOW16                  TF_TMAE_WOW16")
++cpp_quote("#define TF_TMF_CONSOLE                TF_TMAE_CONSOLE")
++cpp_quote("#define TF_TMF_IMMERSIVEMODE          0x40000000")
++cpp_quote("#define TF_TMF_ACTIVATED              0x80000000")
++
+ cpp_quote("#define TF_MOD_ALT                   0x0001")
+ cpp_quote("#define TF_MOD_CONTROL               0x0002")
+ cpp_quote("#define TF_MOD_SHIFT                 0x0004")
+@@ -1742,6 +1759,70 @@ interface ITfUIElement : IUnknown
+ }
+ 
+ [
++    object,
++    local,
++    uuid(ea1ea138-19df-11d7-a6d2-00065b84435c),
++    pointer_default(unique)
++]
++interface ITfCandidateListUIElement : ITfUIElement
++{
++    HRESULT GetUpdatedFlags(
++        [out] DWORD *pdwFlags);
++
++    HRESULT GetDocumentMgr(
++        [out] ITfDocumentMgr **ppdim);
++
++    HRESULT GetCount(
++        [out] UINT *puCount);
++
++    HRESULT GetSelection(
++        [out] UINT *puIndex);
++
++    HRESULT GetString(
++        [in] UINT uIndex,
++        [out] BSTR *pstr);
++
++    HRESULT GetPageIndex(
++        [out, size_is(uSize), length_is(puPageCnt)] UINT *pIndex,
++        [in] UINT uSize,
++        [out] UINT *puPageCnt);
++
++    HRESULT SetPageIndex(
++        [in, size_is(uPageCnt)] UINT *pIndex,
++        [in] UINT uPageCnt);
++
++    HRESULT GetCurrentPage(
++        [out] UINT *puPage);
++}
++
++[
++    object,
++    local,
++    uuid(ea1ea139-19df-11d7-a6d2-00065b84435c),
++    pointer_default(unique)
++]
++interface ITfReadingInformationUIElement : ITfUIElement
++{
++    HRESULT GetUpdatedFlags(
++        [out] DWORD *pdwFlags);
++
++    HRESULT GetContext(
++        [out] ITfContext **ppic);
++
++    HRESULT GetString(
++        [out] BSTR *pstr);
++
++    HRESULT GetMaxReadingStringLength(
++        [out] UINT *pcchMax);
++
++    HRESULT GetErrorIndex(
++        [out] UINT *pErrorIndex);
++
++    HRESULT IsVerticalOrderPreferred(
++        [out] BOOL *pfVertical);
++}
++
++[
+     object,
+     local,
+     uuid(887aa91e-acba-4931-84da-3c5208cf543f),
